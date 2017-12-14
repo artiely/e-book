@@ -1,0 +1,90 @@
+@dk_bg:#333;
+@dk_d_bg:#222;
+@dk_l_bg:#777;
+@dk_color:#dfc;
+@db_active:#38f;
+
+
+@lt_bg:#f8f8f8;
+@lt_d_bg:#eee;
+@lt_color:#333;
+@lt_active:#38f;
+
+.dark {
+  .van-nav-bar {
+    background: @dk_d_bg;
+    color: @dk_color
+  }
+  .van-tabs__wrap {
+    .van-tabs__nav-bar{
+      background-color: @db_active
+    }
+    .van-tab {
+      background:@dk_bg;
+      color:@dk_color;
+      &.van-tab--active {
+        color: @db_active
+      }
+    }
+  }
+  .van-tabs__content{
+    background: @dk_l_bg;
+  }
+  .van-tabbar{
+    background:@dk_bg;
+    .van-tabbar-item{
+      color:@dk_color;
+    }
+    .van-tabbar-item--active {
+      color: @db_active
+    }
+    
+  }
+  .logo{
+    width: 100px;
+    height: 26px;
+    margin: 4px auto
+  }
+  .setting{
+    background: @dk_l_bg;
+  }
+  
+}
+
+
+
+.light{
+  .van-nav-bar {
+    background: @lt_d_bg;
+    color: @lt_color
+  }
+  .van-tabs__wrap {
+    .van-tabs__nav-bar{
+      background-color: @db_active
+    }
+    .van-tab {
+      background:@lt_bg;
+      color:@lt_color;
+      &.van-tab--active {
+        color: @lt_active
+      }
+    }
+  }
+  .van-tabbar{
+    background:@lt_bg;
+    color:@lt_color;
+    .van-tabbar-item{
+      color:@lt_color;
+    }
+    .van-tabbar-item--active {
+      color: @lt_active
+    }
+    
+  }
+  .logo{
+    filter: brightness(0.2);
+    width: 100px;
+    height: 26px;
+    margin: 4px auto
+  }
+}

@@ -1,0 +1,143 @@
+<template>
+  <div class="index page">
+    <van-nav-bar title="详情" @click-right="onClickRight" @click-left="onClickLeft" fixed>
+      <div slot="left">
+        <i class="iconfont icon-fanhui"></i>
+      </div>
+      <div slot="right">
+        <i class="iconfont icon-jia"></i>
+      </div>
+    </van-nav-bar>
+    <div class="detail" :class="fontClass">
+      能够动态改变结构树，增、删、隐藏、展示。 问题 添加事件，添加的对象是动态的，如何动态绑定 结构是无限的，需要怎么实现。 解决思路 vue子父组件间的传值实际是同一块内存地址，因此在子组件内，是可以改变父组件的值（虽然官方并不提倡这种双向数据流）,父组件a.b对象通过props传个子组件，子组件对b对象进行修改，父组件的a.b对象也会改变 可以使用递归的思想，当传入的对象，有子属性的时候，可以继续递归使用自身（需要声明name属性） 代码片段 父组件 import item from './cccc.vue'
+      export default { created() { }, methods: { }, components: { item }, data() { return { b: "", treeData: { name: '蜂投网', children: [ { name: '行政' }, { name: '人事' }, { name: '技术中心', children: [{ name: '李工', children: [ { name: 'PHP组' , children:[ {name:'代绮'},
+      {name:'姚美美'}]}, { name: 'js组', children:[ {name:"硕哥"},{name:"唐老师"},{name:'胖子'}]} ] }, { name: '谭工' }, { name: '龙工' }, ] } ] } } } } 代码片段 子组件 export default { name: 'item', props: { model: Object }, data: function () { return { open: false, ttt:'rotate(0deg)'
+      } }, computed: { isFolder: function () { return this.model.children && this.model.children.length } }, methods: { toggle: function () { if (this.isFolder) { if(this.ttt=="rotate(90deg)"){ this.ttt='rotate(0deg)' }else{ this.ttt='rotate(90deg)' } setTimeout(()=>{this.open
+      = !this.open},50) } }, changeType: function () { if (!this.isFolder) { console.log("db") this.$set(this.model, 'children', []) this.addChild() this.open = true } }, addChild: function () { let a =prompt("请输入你的姓名","姓名") if(a){ this.model.children.push({
+      name: a })} } } } 作者：虚光 链接：https://juejin.im/post/5a314731f265da432d281a9a 来源：掘金 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+    </div>
+    <van-popup v-model="show" style="width:100%;height:50%;" position="top">
+      <van-nav-bar title="设置" @click-right="falseToShow" fixed>
+        <div slot="right">
+          <i class="iconfont icon-X"></i>
+        </div>
+      </van-nav-bar>
+      <div style="padding-top:50px">
+        <label class="font-item" :class="checkFontSize.value==v.value?'active':''" v-for="(v,k) in fontSize" :key="k">
+                <input type="radio" v-model="defaultFontSize" :value="v" name="font"/>{{v.label}}
+                <i class="iconfont icon-mini-dui" v-show="checkFontSize.value==v.value"></i>
+              </label>
+      </div>
+    </van-popup>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'app',
+    data() {
+      return {
+        show: false,
+        defaultFontSize: {
+          value: 14,
+          label: '默认字体'
+        },
+        fontClass: 'f14',
+        fontSize: [
+          {
+            value: 12,
+            label: '小号字体'
+          },
+          {
+            value: 14,
+            label: '默认字体'
+          },
+          {
+            value: 16,
+            label: '中号字体'
+          },
+          {
+            value: 18,
+            label: '大号字体'
+          }
+        ]
+      }
+    },
+    computed: {
+      checkFontSize() {
+        return this.$store.state.user.checkFontSize
+      }
+    },
+    watch: {
+      defaultFontSize: {
+        handler(val) {
+          if (val.value === 12) {
+            this.fontClass = 'f12'
+          } else if (val.value === 14) {
+            this.fontClass = 'f14'
+          } else if (val.value === 16) {
+            this.fontClass = 'f16'
+          } else {
+            this.fontClass = 'f18'
+          }
+          this.$store.dispatch('setFontSize', val)
+        }
+      }
+    },
+    created() {
+      this.defaultFontSize = this.checkFontSize
+      console.log(this.checkFontSize)
+    },
+    methods: {
+      onClickRight() {
+        this.show = true
+      },
+      onClickLeft() {
+        this.$router.go(-1)
+      },
+      falseToShow() {
+        this.show = false
+      }
+    },
+    mounted() {
+      this.$nextTick(() => {})
+    }
+  }
+</script>
+
+<style scoped lang="less">
+  @import '../assets/mixin.less';
+  .detail {
+    padding-top: 50px;
+  }
+  .font-item {
+    display: block;
+    text-align: left;
+    padding: 8px;
+    color: #777;
+    &.active {
+      color: #f00
+    }
+    .b_b();
+    .iconfont {
+      float: right;
+      margin-top: 4px;
+      margin-right: 4px;
+    }
+    input {
+      visibility: hidden;
+    }
+  }
+  .f12 {
+    font-size: 12px !important
+  }
+  .f14 {
+    font-size: 14px !important
+  }
+  .f16 {
+    font-size: 16px !important
+  }
+  .f18 {
+    font-size: 18px !important
+  }
+</style>
