@@ -1,5 +1,5 @@
 <template>
-  <div id="app" ref="app" class="app">
+  <div ref="app" class="app page">
     <!--<van-nav-bar title="标题" fixed leftText="返回" rightText="按钮" leftArrow @click-left="onClickLeft" @click-right="onClickRight" />-->
     <router-view></router-view>
     <van-tabbar v-model="active" class="footer" ref="footer">
@@ -12,8 +12,6 @@
 </template>
 
 <script>
-  //  import utils from '../utils'
-  //  console.log(utils)
   import $ from 'n-zepto'
   export default {
     name: 'app',
@@ -33,20 +31,20 @@
     mounted() {
       this.$nextTick(() => {
         let befotop = document.body.scrollTop
-        // let app = this.$refs.app.$el
-        // console.log('app', app)
+        var timer = null
         window.onscroll = () => {
+          clearTimeout(timer)
           let currTop = document.body.scrollTop
-          if (currTop - befotop > 0) {
-            // utils.addClass(app, 'toggle')
-            $('#app').addClass('toggle')
-            console.log('1')
-          } else {
-            $('#app').removeClass('toggle')
-            console.log('2')
-            // utils.removeClass(app, 'toggle')
-          }
-          befotop = currTop
+          timer = setTimeout(() => {
+            if (currTop - befotop > 0) {
+              $('#app').addClass('toggle')
+              console.log('1')
+            } else {
+              $('#app').removeClass('toggle')
+              console.log('2')
+            }
+            befotop = currTop
+          }, 30)
         }
       })
     }
@@ -57,17 +55,13 @@
   .footer {
     transition: .2s;
   }
-  .van-tabs__wrap {
-    top: 45px;
-    transition: .2s;
-  }
   .toggle {
     .footer {
       transition: .2s;
-      bottom: -45px
+      bottom: -50px
     }
-    .van-tabs__wrap {
-      top: 0
-    }
+  }
+  .van-hairline--top-bottom::after {
+    border: none
   }
 </style>
