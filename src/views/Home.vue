@@ -3,10 +3,30 @@
     <!--<van-nav-bar title="标题" fixed leftText="返回" rightText="按钮" leftArrow @click-left="onClickLeft" @click-right="onClickRight" />-->
     <router-view></router-view>
     <van-tabbar v-model="active" class="footer" ref="footer">
-      <van-tabbar-item icon="shop">标签</van-tabbar-item>
-      <van-tabbar-item icon="chat" dot>标签</van-tabbar-item>
-      <van-tabbar-item icon="records" info="5">标签</van-tabbar-item>
-      <van-tabbar-item icon="gold-coin" info="20">标签</van-tabbar-item>
+      <van-tabbar-item icon="shop" to="index">
+        <span>头条</span>
+        <template slot="icon" slot-scope="props">
+        <i class="iconfont icon-toutiao"></i>
+        </template>
+      </van-tabbar-item>
+      <van-tabbar-item icon="chat" dot to="love">
+        <span>专栏</span>
+        <template slot="icon" slot-scope="props">
+        <i class="iconfont icon-zhuanlan_jiemu"></i>
+        </template>
+      </van-tabbar-item>
+      <van-tabbar-item icon="records" info="5" to="find">
+        <span>发现</span>
+        <template slot="icon" slot-scope="props">
+        <i class="iconfont icon-faxian"></i>
+        </template>
+      </van-tabbar-item>
+      <van-tabbar-item icon="gold-coin" info="20" to="user">
+        <span>我的</span>
+        <template slot="icon" slot-scope="props">
+        <i class="iconfont icon-wode"></i>
+        </template>
+      </van-tabbar-item>
     </van-tabbar>
   </div>
 </template>

@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="light page">
-    <transition :name="transitionName">
+    <!-- <transition :name="transitionName" mode="in-out"> -->
+    <transition  mode="in-out">
       <keep-alive>
         <router-view class="RouterView"></router-view>
       </keep-alive>
@@ -30,6 +31,7 @@
 <style lang="less">
   @import 'assets/skin.less';
   @import 'assets/mixin.less';
+  @import 'assets/cover.less';
   .RouterView {
     position: absolute;
     width: 100%;
@@ -42,23 +44,23 @@
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     color: #2c3e50;
     .van-nav-bar {
       height: 44px;
       line-height: 44px;
-    }
-    .van-tabs__wrap {
-      box-shadow: 0 3px 5px 0px rgba(0, 0, 0, .1);
-      margin-top: 40px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      z-index: 1;
     }
     .van-tabbar {
       box-shadow: 1px -1px 5px rgba(0, 0, 0, .1);
     }
+     .van-tabs__wrap {
+    box-shadow: 0 3px 5px 0px rgba(0, 0, 0, .1);
+    position: fixed;
+    top: 44px;
+    left: 0;
+    right: 0;
+    z-index: 0;
+  }
   }
   .page {
     background: #fff; // height: 100%;
