@@ -8,14 +8,14 @@ import Api from './api'
 import Vant from 'vant'
 import 'vant/lib/vant-css/index.css'
 import VConsole from 'vconsole'
-/* import vueg from 'vueg'
+import vueg from 'vueg'
 import 'vueg/css/transition-min.css'
 const options = {
   duration: '0.3', // 转场动画时长，默认为0.3，单位秒
   firstEntryDisable: false, // 值为true时禁用首次进入应用时的渐现动画，默认为false
   firstEntryDuration: '.6', // 首次进入应用时的渐现动画时长，默认为.6
-  forwardAnim: 'slideOutDown', // 前进动画，默认为fadeInRight
-  backAnim: 'touchPoint', // 后退动画，默认为fedeInLeft
+  forwardAnim: 'fadeIn', // 前进动画，默认为fadeInRight
+  backAnim: 'fadeIn', // 后退动画，默认为fedeInLeft
   sameDepthDisable: false, // url深度相同时禁用动画，默认为false
   tabs: [{
     name: 'home'
@@ -28,7 +28,7 @@ const options = {
   shadow: true, // 值为false，转场时没有阴影的层次效果
   disable: false // 禁用转场动画，默认为false，嵌套路由默认为true
 }
-Vue.use(vueg, router, options) */
+Vue.use(vueg, router, options)
 var vConsole = new VConsole()
 console.log(vConsole)
 Vue.use(Vant)

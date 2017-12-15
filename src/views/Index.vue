@@ -82,7 +82,7 @@
 <style scoped lang="less">
   @import '../assets/mixin.less';
   .header {
-    z-index: 99;
+    z-index: 1;
     .logo {
       filter: brightness(0.7);
       width: 100px;
@@ -107,12 +107,7 @@
       .textover2();
     }
   }
-  .van-tabs__wrap {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
+ 
   .setting {
     font-size: 14px;
     .setting-footer {
