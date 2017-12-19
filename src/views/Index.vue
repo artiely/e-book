@@ -15,7 +15,7 @@
       <van-tab v-for="(index,k) in titleList" :key="k" :title="index">
         <div style="padding-top:40px">
           <div v-for="(i,k) in 100" :key="k" class="article" @click="toDetail">
-            <h3 class="tit">介绍一下渐进式web App</h3>
+            <h3 class="tit">{{i}}介绍一下渐进式web App</h3>
             <p class="des">每一条数据需要提供第一个select的options选项；后面的文本框需要输入类型；切换为区间输入的时候数据格式的切换，每条数据的唯一name属性。</p>
           </div>
         </div>
@@ -55,14 +55,15 @@
         this.show = true
       },
       skinSwitch() {
-        if ($('#app').hasClass('light')) {
+        let oApp = $('#app')
+        if (oApp.hasClass('light')) {
           this.night = false
-          $('#app').removeClass('light')
-          $('#app').addClass('dark')
+          oApp.removeClass('light')
+          oApp.addClass('dark')
         } else {
           this.night = true
-          $('#app').removeClass('dark')
-          $('#app').addClass('light')
+          oApp.removeClass('dark')
+          oApp.addClass('light')
         }
       },
       onClickRight() {
@@ -81,6 +82,7 @@
 
 <style scoped lang="less">
   @import '../assets/mixin.less';
+  
   .header {
     z-index: 1;
     .logo {
@@ -107,7 +109,6 @@
       .textover2();
     }
   }
- 
   .setting {
     font-size: 14px;
     .setting-footer {

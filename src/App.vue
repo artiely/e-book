@@ -1,7 +1,12 @@
 <template>
   <div id="app" class="light page">
-    <!-- <transition :name="transitionName" mode="in-out"> -->
-    <transition  mode="in-out">
+    <transition v-if="inOut" :name="transitionName" mode="in-out">
+      <!-- <transition mode="in-out"> -->
+      <keep-alive>
+        <router-view class="RouterView"></router-view>
+      </keep-alive>
+    </transition>
+    <transition v-else :name="transitionName" appear>
       <keep-alive>
         <router-view class="RouterView"></router-view>
       </keep-alive>
@@ -14,17 +19,30 @@
     name: 'app',
     data() {
       return {
-        transitionName: 'slide-left'
+        transitionName: 'slide-left',
+        mode: 'in-out',
+        inOut: true
       }
     },
     watch: {
-      '$route'(to, from) {
-        const toDepth = to.path.split('/').length
-        const fromDepth = from.path.split('/').length
-        this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
-        console.log(this.transitionName)
+      '$route': {
+        handler(val, oval) {
+          console.log('this is router', this.$router.isBack)
+          let isBack = this.$router.isBack
+          if (isBack) {
+            this.transitionName = 'slide-right'
+            this.inOut = false
+            if (val.path === '/login') {
+              this.$router.push('/index')
+            }
+          } else {
+            this.transitionName = 'slide-left'
+          }
+          this.$router.isBack = false
+        }
       }
-    }
+    },
+    methods: {}
   }
 </script>
 
@@ -36,8 +54,7 @@
     position: absolute;
     width: 100%;
     transition: all 0.28s ease-in;
-    top: 0;
-    height: 100vh;
+    top: 0; // height: 100vh;
     background: #fff;
   }
   #app {
@@ -53,14 +70,17 @@
     .van-tabbar {
       box-shadow: 1px -1px 5px rgba(0, 0, 0, .1);
     }
-     .van-tabs__wrap {
-    box-shadow: 0 3px 5px 0px rgba(0, 0, 0, .1);
-    position: fixed;
-    top: 44px;
-    left: 0;
-    right: 0;
-    z-index: 0;
-  }
+    .van-tabs__wrap {
+      box-shadow: 0 3px 5px 0px rgba(0, 0, 0, .1);
+      position: fixed;
+      top: 44px;
+      left: 0;
+      right: 0;
+      z-index: 0;
+      -webkit-transform: translateZ(0px);
+      transform: translateZ(0px);
+      transform: translate3d(0px, 0px, 0px);
+    }
   }
   .page {
     background: #fff; // height: 100%;
@@ -90,12 +110,14 @@
   }
   .slide-left-enter,
   .slide-right-leave-active {
-    opacity: 0; // -webkit-transform: translate(100%, 0);
-    transform: translate(100%, 0);
+    opacity: 0.5;
+    -webkit-transform: scale(.5, .5);
+    transform: scale(.5, .5)
   }
   .slide-left-leave-active,
   .slide-right-enter {
-    opacity: 1; // -webkit-transform: translate(-100%, 0);
-    // transform: translate(-100% 0);
+    opacity: .5;
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1)
   }
 </style>

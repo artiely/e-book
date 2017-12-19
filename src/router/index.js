@@ -9,9 +9,19 @@ import Detail from '@/views/Detail'
 import Love from '@/views/Love'
 import Find from '@/views/Find'
 import User from '@/views/User'
+import Register from '@/views/Register'
+import Demo from '@/views/Demo'
 
 Vue.use(Router)
-
+Router.prototype.goBack = function() {
+  this.isBack = true
+  window.history.go(-1)
+}
+Router.prototype.back = function() {
+  this.isBack = true
+  window.history.go(-1)
+}
+console.log('router', Router)
 export default new Router({
   scrollBehavior(to, from, savedPosition) {
     return {
@@ -19,52 +29,62 @@ export default new Router({
       y: 0
     }
   },
-  routes: [{
-    path: '/',
-    redirect: '/home'
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/sort',
-    name: 'Sort',
-    component: Sort
-  },
-  {
-    path: '/detail',
-    name: 'Detail',
-    component: Detail
-  },
-  {
-    path: '/home',
-    name: 'Home',
-    component: Home,
-    redirect: '/home/index',
-    children: [
-      {
-        path: 'index',
+  routes: [
+    {
+      path: '/',
+      redirect: '/home'
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/sort',
+      name: 'Sort',
+      component: Sort
+    },
+    {
+      path: '/detail',
+      name: 'Detail',
+      component: Detail
+    },
+    {
+      path: '/demo',
+      name: 'Demo',
+      component: Demo
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home,
+      redirect: '/index',
+      children: [{
+        path: '/index',
         name: 'Index',
         component: Index
       },
       {
-        path: 'find',
+        path: '/find',
         name: 'Find',
         component: Find
       },
       {
-        path: 'love',
+        path: '/love',
         name: 'Love',
         component: Love
       },
       {
-        path: 'user',
+        path: '/user',
         name: 'User',
         component: User
       }
-    ]
-  }
+      ]
+    }
   ]
 })

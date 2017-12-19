@@ -31,6 +31,7 @@
     margin 5px auto
     border-radius 22px
     height 40px
+    text-align center
     background #00deff
     background -webkit-linear-gradient(315deg, #00deff 0, #02caff 56%, #03b5ff 100%)
     background -o-linear-gradient(315deg, #00deff 0, #02caff 56%, #03b5ff 100%)
