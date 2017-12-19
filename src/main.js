@@ -7,8 +7,11 @@ import store from './vuex'
 import Api from './api'
 import Vant from 'vant'
 import 'vant/lib/vant-css/index.css'
-import VConsole from 'vconsole'
-import vueg from 'vueg'
+import './package/style/index.less'
+import Ivue from './package'
+Vue.use(Ivue)
+// import VConsole from 'vconsole'
+/* import vueg from 'vueg'
 import 'vueg/css/transition-min.css'
 const options = {
   duration: '0.3', // 转场动画时长，默认为0.3，单位秒
@@ -28,9 +31,9 @@ const options = {
   shadow: true, // 值为false，转场时没有阴影的层次效果
   disable: false // 禁用转场动画，默认为false，嵌套路由默认为true
 }
-Vue.use(vueg, router, options)
-var vConsole = new VConsole()
-console.log(vConsole)
+Vue.use(vueg, router, options) */
+/* var vConsole = new VConsole()
+console.log(vConsole) */
 Vue.use(Vant)
 Vue.use(Api)
 

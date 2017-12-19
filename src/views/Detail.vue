@@ -94,7 +94,7 @@
         this.show = true
       },
       onClickLeft() {
-        this.$router.go(-1)
+        this.$router.back()
       },
       falseToShow() {
         this.show = false
