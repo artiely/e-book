@@ -1,8 +1,10 @@
 <template>
   <div class="index page">
+    <div style="padding-top:20px"></div>
     <van-cell-group>
-      <van-cell title="单元格" value="内容" />
-      <van-cell title="单元格" value="内容" label="描述信息" />
+      <van-cell title="姓名" value="王大锤" />
+      <van-cell title="所属部门" value="技术部" />
+      <van-cell title="管辖公司" value="史塞克" label="描述信息" />
     </van-cell-group>
   </div>
 </template>

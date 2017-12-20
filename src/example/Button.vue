@@ -1,5 +1,6 @@
 <template>
   <div>
+    <i-blank>
     <i-button>默认</i-button>
     <i-button type='warning'>warning</i-button>
     <i-space></i-space>
@@ -29,7 +30,7 @@
     <i-button type='danger' disabled>disabled</i-button>
     <i-icon></i-icon>
     <i-button type='danger' noShadow>noShadow</i-button>
-    
+    </i-blank>
   </div>
 </template>
 

@@ -1,26 +1,44 @@
 <template>
   <div class="index page">
-    <van-nav-bar ref="header" class="header" fixed @click-left="onClickLeft" @click-right="onClickRight">
-      <div slot="left">
-        <i class="iconfont icon-book"></i>
+    <van-nav-bar ref="header" class="header" fixed @click-left="onClickLeft">
+      <div slot="left" class="header-left">
+        <i class="iconfont icon-weibiaoti35"></i> 全部公司
       </div>
-      <div slot="title">口袋书
+      <div slot="title">
+        <!-- 口袋书 -->
         <!-- <img :src="require('../assets/logo_eng_white.png')" alt=""> -->
       </div>
       <div slot="right">
-        <i class="iconfont icon-paixu"></i>
+        <span class="right-item" @click="search">
+                  <i class="iconfont icon-sousuo"></i>
+                </span>
+        <span class="right-item" @click="setting">
+                  <i class="iconfont icon-caidan-2"></i>
+                </span>
       </div>
     </van-nav-bar>
-    <van-tabs sticky class="tab">
-      <van-tab v-for="(index,k) in titleList" :key="k" :title="index">
-        <div style="padding-top:40px">
-          <div v-for="(i,k) in 100" :key="k" class="article" @click="toDetail">
-            <h3 class="tit">{{i}}介绍一下渐进式web App</h3>
-            <p class="des">每一条数据需要提供第一个select的options选项；后面的文本框需要输入类型；切换为区间输入的时候数据格式的切换，每条数据的唯一name属性。</p>
-          </div>
-        </div>
-      </van-tab>
-    </van-tabs>
+    <!--  <van-tabs sticky class="tab">
+                          <van-tab v-for="(index,k) in titleList" :key="k" :title="index">
+                            <div style="padding-top:40px">
+                              <div v-for="(i,k) in 100" :key="k" class="article" @click="toDetail">
+                                <h3 class="tit">{{i}}介绍一下渐进式web App</h3>
+                                <p class="des">每一条数据需要提供第一个select的options选项；后面的文本框需要输入类型；切换为区间输入的时候数据格式的切换，每条数据的唯一name属性。</p>
+                              </div>
+                            </div>
+                          </van-tab>
+                        </van-tabs> -->
+    <van-row style="padding-top:45px;" class="grid-tit">
+      <van-col span="8" v-for="(v,k) in gridList" :key="k" @click.native="goList">
+        <svg class="icon" aria-hidden="true">
+                      <use :xlink:href="'#'+v.icon"></use>
+                  </svg>
+        <p>{{v.label}}</p>
+      </van-col>
+    </van-row>
+    <div class="new-wrap">
+      <div class="new-tit">最新</div>
+      <article-item></article-item>
+    </div>
     <van-popup class="setting" v-model="show" position="left" style="height:100%;width:70%">
       <div class="setting-footer">
         <div class="skin-switch" @click="skinSwitch">
@@ -37,22 +55,50 @@
 
 <script>
   import $ from 'n-zepto'
+  import ArticleItem from './Article-item.vue'
   export default {
     name: 'app',
     data() {
       return {
         show: false,
-        night: true
+        night: true,
+        gridList: [
+          {
+            label: '系统',
+            icon: 'icon-yewuchaxun'
+          },
+          {
+            label: '邮件',
+            icon: 'icon-rizhi'
+          },
+          {
+            label: '外设',
+            icon: 'icon-tiaochaziliaoguanli'
+          },
+          {
+            label: '软件',
+            icon: 'icon-renlianduibi'
+          },
+          {
+            label: '现场',
+            icon: 'icon-kehuweizhixinxicaiji'
+          },
+          {
+            label: '其他',
+            icon: 'icon-gaofengxianmingdanchaxun'
+          }
+        ]
       }
     },
-    computed: {
-      titleList() {
-        return this.$store.state.user.titleList
-      }
+    components: {
+      ArticleItem
     },
     methods: {
       onClickLeft() {
-        this.show = true
+        this.$router.push('/company')
+      },
+      goList() {
+        this.$router.push('/list')
       },
       skinSwitch() {
         let oApp = $('#app')
@@ -66,11 +112,14 @@
           oApp.addClass('light')
         }
       },
-      onClickRight() {
-        this.$router.push('/sort')
-      },
       toDetail() {
         this.$router.push('/detail')
+      },
+      search() {
+        this.$router.push('/find')
+      },
+      setting() {
+        this.show = true
       }
     },
     mounted() {
@@ -82,7 +131,6 @@
 
 <style scoped lang="less">
   @import '../assets/mixin.less';
-  
   .header {
     z-index: 1;
     .logo {
@@ -91,22 +139,24 @@
       height: 26px;
       margin: 4px auto
     }
-  }
-  .article {
-    padding: 10px;
-    .b_b();
-    .tit {
-      text-align: left;
-      font-size: 14px;
-      color: #333;
-      margin: 0;
+    .header-left {
+      max-width: 200px;
       .textover1();
     }
-    .des {
-      text-align: left;
-      font-size: 12px;
-      color: #777;
-      .textover2();
+    .right-item {
+      height: 100%;
+      width: 40px;
+      display: inline-block;
+    }
+    .van-nav-bar__right {
+      right: 0!important;
+    }
+  }
+  .new-wrap{
+    padding: 10px;
+    .new-tit{
+      padding: 8px;
+
     }
   }
   .setting {
@@ -131,6 +181,20 @@
         flex: 1;
         text-align: right;
       }
+    }
+  }
+  .grid-tit {
+    text-align: center;
+    .van-col.van-col-8 {
+      padding: 8px 0;
+      box-sizing: border-box;
+    }
+    .icon {
+      font-size: 35px;
+    }
+    p {
+      font-size: 14px;
+      margin: 0;
     }
   }
 </style>

@@ -1,6 +1,18 @@
 <template>
   <div class="index page">
-    <van-search v-model="value" placeholder="请输入关键词" :showAction="true" @search="onSearch">
+    <van-nav-bar ref="header" class="header" fixed @click-left="onClickLeft">
+      <div slot="left" class="header-left">
+        <i class="iconfont icon-fanhui"></i>
+      </div>
+      <div slot="title">
+        <!-- 口袋书 -->
+        <!-- <img :src="require('../assets/logo_eng_white.png')" alt=""> -->
+      </div>
+      <div slot="right" @click="goCompany">
+        <i class="iconfont  icon-weibiaoti35"></i>全部公司
+      </div>
+    </van-nav-bar>
+    <van-search style="padding-top:44px;" v-model="value" placeholder="请输入关键词" :showAction="true" @search="onSearch">
     </van-search>
   </div>
 </template>
@@ -20,7 +32,13 @@
       onClickRight() {
         this.$router.go(-1)
       },
-      onSearch() {}
+      onClickLeft() {
+        this.$router.back()
+      },
+      onSearch() {},
+      goCompany() {
+        this.$router.push('/company')
+      }
     },
     mounted() {
       this.$nextTick(() => {})

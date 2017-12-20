@@ -1,22 +1,19 @@
 <template>
   <button class="i__button i__ripple" :class="['i__button--' + type, 'i-button--' + size, {
-          'is-disabled': disabled,
-          'i-border-radius':type=='ghost',
-          'is-plain': plain,
-          'is-circle':circle,
-          'i__button--block':block,
-          'no-shadow':noShadow
-        }]" 
-        @click="handleClick"
-        :disabled="disabled"
-        >
-    <span >
-      <slot name="icon">
-        <i-icon v-if="icon"></i-icon>
-      </slot>
-    </span>
-    <slot></slot>
-  </button>
+            'is-disabled': disabled,
+            'i-border-radius':type=='ghost',
+            'is-plain': plain,
+            'is-circle':circle,
+            'i__button--block':block,
+            'no-shadow':noShadow
+          }]" @click="handleClick" :disabled="disabled">
+      <span >
+        <slot name="icon">
+          <i-icon v-if="icon"></i-icon>
+        </slot>
+      </span>
+      <slot></slot>
+    </button>
 </template>
 
 <script>
@@ -30,7 +27,7 @@
     },
     methods: {
       handleClick(evt) {
-        this.$emit('click', evt);
+        this.$emit('click', evt)
       }
     },
     props: {
@@ -51,7 +48,7 @@
             'ghost',
             'danger',
             'primary'
-          ].indexOf(value) > -1;
+          ].indexOf(value) > -1
         }
       },
       size: {
@@ -62,7 +59,7 @@
             'small',
             'normal',
             'large'
-          ].indexOf(value) > -1;
+          ].indexOf(value) > -1
         }
       }
     }
