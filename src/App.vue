@@ -57,6 +57,16 @@
     top: 0; // height: 100vh;
     background: #fff;
   }
+   .__has-clock__{
+    background: #f00;
+    color: #fff;
+  }
+  .icon {
+       width: 1em; height: 1em;
+       vertical-align: -0.15em;
+       fill: currentColor;
+       overflow: hidden;
+    }
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

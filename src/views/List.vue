@@ -4,14 +4,15 @@
       <div slot="left">
         <i class="iconfont icon-fanhui"></i>
       </div>
-      <div slot="title">
+      <div slot="title">系统
+        <!-- <img :src="require('../assets/logo_eng_white.png')" alt=""> -->
       </div>
       <div slot="right">
-        <i class="iconfont icon-paixu"></i>
+        <i class="iconfont icon-sousuo"></i>
       </div>
     </van-nav-bar>
     <van-tabs sticky class="tab">
-      <van-tab v-for="(index,k) in department" :key="k" :title="index">
+      <van-tab v-for="(index,k) in titleList" :key="k" :title="index">
         <div style="padding-top:40px">
           <article-item @click="toDetail"></article-item>
         </div>
@@ -25,25 +26,28 @@
     name: 'app',
     data() {
       return {
-        titles: []
+        value: ''
       }
     },
     components: {
       ArticleItem
     },
     computed: {
-      department() {
-        return this.$store.state.user.department
+      titleList() {
+        return this.$store.state.user.titleList
       }
     },
-    created() {},
+    created() {
+      this.titles = this.titleList
+    },
     methods: {
-      onClickRight() {
-        this.$router.push('/sort')
-      },
       onClickLeft() {
         this.$router.back()
       },
+      onClickRight() {
+        this.$router.push('/find')
+      },
+      onSearch() {},
       toDetail() {
         this.$router.push('/detail')
       }
