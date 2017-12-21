@@ -10,9 +10,11 @@ import Love from '@/views/Love'
 import Find from '@/views/Find'
 import User from '@/views/User'
 import Register from '@/views/Register'
-import Button from '@/example/Button'
 import List from '@/views/List'
 import Company from '@/views/Company'
+
+import Button from '@/example/Button'
+import Input from '@/example/Input'
 
 Vue.use(Router)
 Router.prototype.goBack = function() {
@@ -65,6 +67,11 @@ export default new Router({
       path: '/button',
       name: 'Button',
       component: Button
+    },
+    {
+      path: '/input',
+      name: 'Input',
+      component: Input
     },
     {
       path: '/register',

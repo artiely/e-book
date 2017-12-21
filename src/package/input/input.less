@@ -1,0 +1,75 @@
+@import '../style/border.less';
+.i__input--wrapper {
+  height: 36px;
+  width: 100%;
+  overflow: hidden;   
+  display: flex;
+  box-sizing: border-box;
+  border: none;
+  background: @white-bg;
+  .i__f,
+  .i__e {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    align-items: center;
+    height: 36px;
+    width: 30px;
+    text-align: center;
+    line-height: 36px;
+    .iconfont{
+      opacity: 0.7;
+    }
+  }
+  .i__m {
+    flex: 1;
+  }
+  .i__input {
+    overflow: hidden;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    text-indent: 4px;
+    font-size: 14px;
+    color: @color-dark;
+  }
+}
+
+.i__input::-moz-placeholder {
+  color: @placholder-color;
+  opacity: 1
+}
+
+.i__input:-ms-input-placeholder {
+  color: @placholder-color
+}
+
+.i__input::-webkit-input-placeholder {
+  color: @placholder-color
+}
+.i__pend{
+  display: inline-block;
+  height: 100%;
+  line-height: 36px;
+  padding: 0 4px;
+  font-size: 0px;
+  background: @white-bg;
+  select{
+    font-size: 14px;
+    /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0;
+    height: 36px;
+    line-height: 36px;
+    color: @color-dark;
+    /*很关键：将默认的select选择框样式清除*/ 
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+  }
+  select::-ms-expand { display: none; }
+}

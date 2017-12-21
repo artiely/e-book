@@ -4,10 +4,10 @@
       <div class="stickerCon">
         <van-nav-bar title="详情" @click-right="onClickRight" @click-left="onClickLeft" fixed>
           <div slot="left">
-            <i class="iconfont icon-fanhui"></i>
+            <i class="iconfont icon-X"></i>
           </div>
           <div slot="right">
-            <i class="iconfont icon-jia"></i>
+            <i class="iconfont icon-jia1"></i>
           </div>
         </van-nav-bar>
         <div class="detail" :class="fontClass">
@@ -115,6 +115,9 @@
   @import '../assets/mixin.less';
   .detail {
     padding-top: 50px;
+  }
+  .icon-X{
+    opacity: 0.7;
   }
  
   .font-item {
