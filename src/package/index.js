@@ -3,13 +3,15 @@ import Button from './button'
 import Space from './space'
 import Icon from './icon'
 import Blank from './blank'
+import Input from './Input'
 
 // 2.挂载组件对象
 const components = {
   Button,
   Space,
   Icon,
-  Blank
+  Blank,
+  Input
 }
 
 // 3.注册组件

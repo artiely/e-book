@@ -47,9 +47,28 @@
     border: 1px solid @border-color;
     -webkit-transform: scale(0.5);
     -webkit-transform-origin: 0 0;
-    padding: 1px;
     -webkit-box-sizing: border-box;
     border-radius: @border-radius*2;
+    pointer-events: none;
+  }
+
+  .i-border-tt{
+    position: relative;
+    border:0;
+  }
+  .i-border-tt::before{
+    content: "";
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-bottom: 1px solid  @border-color;
+    -webkit-transform: scale(0.5);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    transform: scale(0.5);
+    -webkit-box-sizing: border-box;
     pointer-events: none;
   }
 }

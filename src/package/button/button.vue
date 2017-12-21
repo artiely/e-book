@@ -6,7 +6,9 @@
             'is-circle':circle,
             'i__button--block':block,
             'no-shadow':noShadow
-          }]" @click="handleClick" :disabled="disabled">
+          }]" @click="handleClick" :disabled="disabled"
+      
+          >
       <span >
         <slot name="icon">
           <i-icon v-if="icon"></i-icon>
@@ -65,3 +67,6 @@
     }
   }
 </script>
+<style scoped lang="less">
+  @import './button.less';
+</style>
