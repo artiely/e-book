@@ -9,6 +9,10 @@ import Vant from 'vant'
 import 'vant/lib/vant-css/index.css'
 import './package/style/index.less'
 import Ivue from './package'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+// require styles
+import 'swiper/dist/css/swiper.css'
+Vue.use(VueAwesomeSwiper /* { default global options } */)
 Vue.use(Ivue)
 // import VConsole from 'vconsole'
 /* import vueg from 'vueg'

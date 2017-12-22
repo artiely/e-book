@@ -1,5 +1,5 @@
 <template>
-  <button class="i__button i__ripple" :class="['i__button--' + type, 'i-button--' + size, {
+  <button class="i__button" :class="['i__button--' + type, 'i-button--' + size, {
             'is-disabled': disabled,
             'i-border-radius':type=='ghost',
             'is-plain': plain,
