@@ -6,8 +6,9 @@ const state = {
   userInfo: { // 用户信息
     _id: null
   },
-  department: ['技术部', '财务部', '商务部'],
+  department: ['技术部', '财务部', '商务部', '研发部', '市场部'],
   titleList: ['电脑', '病毒', '系统', '软件', '邮件', '网络', '视频会议'],
+  category: ['系统版本', '系统介质', '账户相关', '注意事项'],
   checkFontSize: {
     value: 14,
     label: '默认字体'

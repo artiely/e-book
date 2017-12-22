@@ -44,7 +44,6 @@
     watch: {
       $route: {
         handler(val) {
-          console.log(val)
           let urlmark = val.path
           switch (urlmark) {
             case '/home':
@@ -90,17 +89,14 @@
         let befotop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         var timer = null
         window.onscroll = () => {
-          console.log('index 滚了')
           clearTimeout(timer)
           let currTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
           timer = setTimeout(() => {
             if (befotop > 50) { // 兼容ios到顶 navbar会隐藏的问题
               if (currTop - befotop > 0) {
                 $('#app').addClass('toggle')
-                console.log('1')
               } else {
                 $('#app').removeClass('toggle')
-                console.log('2')
               }
             }
             befotop = currTop

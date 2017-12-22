@@ -24,27 +24,32 @@
   -ms-user-select: none;
   -khtml-user-select: none;
   user-select: none;
- .mix-hover(@primary)
+ .mix-hover(@primary);
+ 
 }
 .i__button--base{
   background: @base;
   .is-shadow(@base);
-  .mix-hover(@base)
+  .mix-hover(@base);
+  .i__ripple(@base);
 }
 .i__button--primary{
   background: @primary;
   .is-shadow(@primary);
-  .mix-hover(@primary)
+  .mix-hover(@primary);
+  .i__ripple(@primary);
 }
 .i__button--warning{
   background: @warning;
   .is-shadow(@warning);
-  .mix-hover(@warning)
+  .mix-hover(@warning);
+  .i__ripple(@warning);
 }
 .i__button--danger{
   background: @danger;
   .is-shadow(@danger);
-  .mix-hover(@danger)
+  .mix-hover(@danger);
+  .i__ripple(@danger);
 }
 .i__button--ghost{
   background: @ghost;
@@ -73,11 +78,8 @@
   &:before{
     border-radius: 38px;
   }
-  &.i__ripple{
+  &::after{
     border-radius: 22px;
-    &::after{
-      border-radius: 22px;
-    }
   }
 }
 .is-shadow(@arg-color){
@@ -87,7 +89,7 @@
   box-shadow: none
 }
 // 点击反馈效果
-.i__ripple {
+.i__ripple (@arg-color){
   position: relative;
   &:focus{
     outline: none;
@@ -102,7 +104,7 @@
     bottom: -10px;
     border-radius: @border-radius;
     pointer-events: none;
-    background-color: #333;
+    background-color: @arg-color;
     background-repeat: no-repeat;
     background-position: 50%;
     opacity: 0;

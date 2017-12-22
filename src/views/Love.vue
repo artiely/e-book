@@ -48,9 +48,7 @@
         this.$router.push('/detail')
       }
     },
-    mounted() {
-      this.$nextTick(() => {})
-    }
+    mounted() {}
   }
 </script>
 

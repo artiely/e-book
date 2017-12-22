@@ -50,6 +50,9 @@
   @import 'assets/skin.less';
   @import 'assets/mixin.less';
   @import 'assets/cover.less';
+  *{
+    margin: 0;padding: 0;
+  }
   .RouterView {
     position: absolute;
     width: 100%;
@@ -68,14 +71,14 @@
        overflow: hidden;
     }
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: 'microsoft Yahei','Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
     .van-nav-bar {
       height: 44px;
       line-height: 44px;
-      z-index: 1;
+      z-index: 2;
     }
     .van-tabbar {
       box-shadow: 1px -1px 5px rgba(0, 0, 0, .1);
@@ -93,7 +96,7 @@
     }
   }
   .page {
-    background: #fff; // height: 100%;
+    background: rgb(248, 252, 247); // height: 100%;
   }
   .sticker {
     height: auto;

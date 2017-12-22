@@ -1,6 +1,14 @@
 <template>
   <div class="index page">
-    <div style="padding-top:20px"></div>
+    <div class="userInfo">
+      <div class="usericon">
+        <div class="icon-wrap"></div>
+      </div>
+      <div class="usertext">
+        <div class="nickname">谭杰</div>
+        <div class="company">群思科技（武汉）有限公司</div>
+      </div>
+    </div>
     <van-cell-group>
       <van-cell title="姓名" value="王大锤" />
       <van-cell title="所属部门" value="技术部" />
@@ -32,5 +40,36 @@
 </script>
 
 <style scoped lang="less">
-
+@import '../assets/mixin.less';
+.userInfo{
+  display: flex;
+  padding: 20px 0;
+  background: #fff;
+  .b_t;
+  .usericon{
+    width: 60px;
+    padding-left: 10px;
+    .icon-wrap{
+      height: 48px;
+      width: 48px;
+      border-radius:50%;
+      overflow: hidden;
+      background: #ddd;
+      margin: 0 auto;
+    }
+  }
+  .usertext{
+    flex: 1;
+    .nickname{
+      font-size: 16px;
+      padding-top: 4px;
+      color: #666;
+    }
+    .company{
+      font-size: 12px;
+      padding-top: 4px;
+      color: #777;
+    }
+  }
+}
 </style>

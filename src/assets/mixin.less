@@ -32,3 +32,22 @@ html,
 body {
   -webkit-overflow-scrolling: touch;
 }
+// 清浮动
+.clearfix{
+  &:after{
+    content:'';
+    height: 0;
+    display: block;
+    overflow: hidden;
+    clear: both;
+  }
+}
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+.shadow{
+  box-shadow: 0 3px 5px 0px rgba(0, 0, 0, .1);
+}

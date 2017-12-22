@@ -5,10 +5,11 @@
   overflow: hidden;   
   display: flex;
   box-sizing: border-box;
-  border: none;
   background: @white-bg;
+  border: none;
   .i__f,
-  .i__e {
+  .i__e,
+  .i__type {
     display: inline-block;
     vertical-align: middle;
     position: relative;
@@ -54,8 +55,7 @@
   height: 100%;
   line-height: 36px;
   padding: 0 4px;
-  font-size: 0px;
-  background: @white-bg;
+  font-size: 14px;
   select{
     font-size: 14px;
     /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
@@ -72,4 +72,40 @@
     -webkit-appearance:none;
   }
   select::-ms-expand { display: none; }
+}
+.i__state--error{
+  color: @danger;
+  .i__input{
+    color: @danger;
+  }
+  .i__pend{
+    color: @danger;
+  }
+  select{
+    color: @danger;
+  }
+}
+.i__state--warning{
+  color: @warning;
+  .i__input{
+    color: @warning;
+  }
+  .i__pend{
+    color: @warning;
+  }
+  select{
+    color: @warning;
+  }
+}
+.i__state--right{
+  color: @base;
+  .i__input{
+    color: @base;
+  }
+  .i__pend{
+    color: @base;
+  }
+  select{
+    color: @base;
+  }
 }
