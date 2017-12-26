@@ -1,7 +1,9 @@
 <template>
   <div ref="app" class="app page">
+    <transition :name="transitionName">
+      <router-view class="RouterView"></router-view>
+    </transition>
     <!--<van-nav-bar title="标题" fixed leftText="返回" rightText="按钮" leftArrow @click-left="onClickLeft" @click-right="onClickRight" />-->
-    <router-view class="RouterView"></router-view>
     <van-tabbar v-model="active" class="footer" ref="footer">
       <van-tabbar-item icon="shop" to="index">
         <span>头条</span>
@@ -32,13 +34,13 @@
 </template>
 
 <script>
-  import $ from 'n-zepto'
   import Cookies from 'js-cookie'
   export default {
     name: 'app',
     data() {
       return {
-        active: 0
+        active: 0,
+        transitionName: 'slide-left'
       }
     },
     watch: {
@@ -69,6 +71,15 @@
             active: this.active
           })
         }
+      },
+      'active': {
+        handler(v, o) {
+          if (o > v) {
+            this.transitionName = 'slide-right'
+          } else {
+            this.transitionName = 'slide-left'
+          }
+        }
       }
     },
     created() {
@@ -84,40 +95,31 @@
         this.$toast('按钮')
       }
     },
-    mounted() {
-      this.$nextTick(() => {
-        let befotop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        var timer = null
-        window.onscroll = () => {
-          clearTimeout(timer)
-          let currTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-          timer = setTimeout(() => {
-            if (befotop > 50) { // 兼容ios到顶 navbar会隐藏的问题
-              if (currTop - befotop > 0) {
-                $('#app').addClass('toggle')
-              } else {
-                $('#app').removeClass('toggle')
-              }
-            }
-            befotop = currTop
-          }, 1000 / 60)
-        }
-      })
-    }
+    mounted() {}
   }
 </script>
 
 <style lang="less">
-  .footer {
-    transition: .2s;
+  .slide-left-enter {
+    opacity: 0;
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
   }
-  .toggle {
-    .footer {
-      transition: .2s;
-      bottom: -50px
-    }
+  
+  .slide-right-leave-active {
+    opacity: 0;
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
   }
-  .van-hairline--top-bottom::after {
-    border: none
+  
+  .slide-right-enter {
+    opacity: 0;
+    -webkit-transform: translate(0, 0);
+    transform: translate(0 0);
+  }
+  .slide-left-leave-active {
+    opacity: 0;
+    -webkit-transform: translate(0, 0);
+    transform: translate(0 0);
   }
 </style>

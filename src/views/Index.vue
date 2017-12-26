@@ -8,26 +8,31 @@
       </div>
       <div slot="right">
         <span class="right-item" @click="search">
-                    <i class="iconfont icon-sousuo"></i>
-                  </span>
+                <i class="iconfont icon-sousuo"></i>
+              </span>
         <span class="right-item" @click="setting">
-                    <i class="iconfont icon-caidan-2"></i>
-                  </span>
+                <i class="iconfont icon-caidan-2"></i>
+              </span>
       </div>
     </van-nav-bar>
-    <van-row style="padding-top:45px;" class="grid-tit">
-      <swiper :options="swiperOption" class="swiper">
-        <swiper-slide v-for="(v,k) in gridList" :key="k" @click.native="goList">
-          <svg class="icon" aria-hidden="true">
-                        <use :xlink:href="'#'+v.icon"></use>
-                    </svg>
-        <p>{{v.label}}</p>
-        </swiper-slide>
-      </swiper>
-    </van-row>
     <div class="new-wrap">
-      <!-- <div class="new-tit">最新</div> -->
-      <article-top></article-top>
+      <div class="wrapper">
+        <cube-scroll @pulling-down="onPullingDown" :listenScroll="true" @scroll="scroll" :options="options">
+          <div class="content" slot="default">
+            <van-row style="padding-top:45px;" class="grid-tit">
+              <swiper :options="swiperOption" class="swiper">
+                <swiper-slide v-for="(v,k) in gridList" :key="k" @click.native="goList">
+                  <svg class="icon" aria-hidden="true">
+                                    <use :xlink:href="'#'+v.icon"></use>
+                                </svg>
+                  <p>{{v.label}}</p>
+                </swiper-slide>
+              </swiper>
+            </van-row>
+            <article-top></article-top>
+          </div>
+        </cube-scroll>
+      </div>
     </div>
     <van-popup class="setting" v-model="show" position="left" style="height:100%;width:70%">
       <div class="setting-footer">
@@ -83,7 +88,12 @@
           slidesPerView: 4.7,
           spaceBetween: 30,
           freeMode: true
-        }
+        },
+        options: {
+          probeType: 2
+        },
+        scrollY: 0,
+        timer: null
       }
     },
     components: {
@@ -91,8 +101,25 @@
       ArticleTop
     },
     methods: {
+      onPullingDown() {},
       onClickLeft() {
         this.$router.push('/company')
+      },
+      scroll(v) {
+        let currentY = v.y
+        console.log('currentY', currentY, this.scrollY)
+        this.timer = setTimeout(() => {
+          if (currentY < -50) { // 还是解决ios下的怪异问题
+            if (Math.abs(currentY) > Math.abs(this.scrollY)) {
+              $('#app').addClass('toggle')
+              console.log('向下')
+            } else {
+              console.log('向上')
+              $('#app').removeClass('toggle')
+            }
+          }
+          this.scrollY = currentY
+        }, 1000 / 60)
       },
       goList() {
         this.$router.push('/list')
@@ -128,12 +155,16 @@
 
 <style scoped lang="less">
   @import '../assets/mixin.less';
-  .swiper{
+  .swiper {
     padding: 14px 0;
     background: #eee;
   }
+  .wrapper {
+    height: 100vh;
+  }
   .header {
     z-index: 1;
+    transform: translateZ(0px);
     .logo {
       filter: brightness(0.7);
       width: 100px;
@@ -154,7 +185,7 @@
     }
   }
   .new-wrap {
-    padding: 10px;
+    padding: 0;
     .new-tit {
       padding: 8px;
     }

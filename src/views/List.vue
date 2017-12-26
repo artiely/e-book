@@ -13,20 +13,25 @@
     </van-nav-bar>
     <van-tabs sticky class="tab">
       <van-tab v-for="(index,k) in titleList" :key="k" :title="index">
-        <div style="padding-top:60px">
-          <van-row gutter="10">
-          <van-col v-for="(v,k) in category" :key="k" span="8">
-            <div class="category textover1">{{v}}</div>
-          </van-col>
-        </van-row>
-          <article-item @click="toDetail"></article-item>
+        <div >
+          <div class="wrapper">
+            <cube-scroll>
+              <div style="padding-top:88px"></div>
+              <van-row gutter="10">
+            <van-col v-for="(v,k) in category" :key="k" span="8">
+              <div class="category textover1">{{v}}</div>
+            </van-col>
+          </van-row>
+              <article-top @click="toDetail"></article-top>
+            </cube-scroll>
+          </div>
         </div>
       </van-tab>
     </van-tabs>
   </div>
 </template>
 <script>
-  import ArticleItem from './Article-item.vue'
+  import ArticleTop from './Article-top.vue'
   export default {
     name: 'app',
     data() {
@@ -35,7 +40,7 @@
       }
     },
     components: {
-      ArticleItem
+      ArticleTop
     },
     computed: {
       titleList() {
@@ -67,13 +72,16 @@
 </script>
 
 <style scoped lang="less">
-.category{
-  padding: 10px 0;
-  text-align: center;
-  background: #fff;
-  border-radius: 4px;
-  margin:6px 0;
-  box-shadow: 1px 3px 6px rgba(227, 247, 234, 0.5);
-  font-size: 14px;
+.wrapper{
+  height: 100vh;
 }
+  .category {
+    padding: 10px 0;
+    text-align: center;
+    background: #fff;
+    border-radius: 4px;
+    margin: 6px 0;
+    box-shadow: 1px 3px 6px rgba(227, 247, 234, 0.5);
+    font-size: 14px;
+  }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(i,k) in 100" :key="k" class="article-top" @click="toDetail">
+    <div v-for="(i,k) in 20" :key="k" class="article-top" @click="toDetail">
       <h3 class="tit">{{i}}介绍一下渐进式介绍一下渐进式介绍一下渐进式介绍一下渐进式web App</h3>
       <div class="clearfix"><span class="user-icon fl"></span> <span class="author fl">谭杰</span></div>
       <p class="des">每一条数据需要提供第一个select的options选项；后面的文本框需要输入类型；切换为区间输入的时候数据格式的切换，每条数据的唯一name属性。</p>
@@ -39,6 +39,7 @@
     box-shadow: 1px 1px 6px rgba(175, 236, 223, 0.2);
     border-radius: 4px;
     margin:10px auto;
+    line-height: 1.5;
     .user-icon{
       display: inline-block;
       height: 15px;

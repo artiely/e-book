@@ -12,8 +12,10 @@ import Ivue from './package'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 // require styles
 import 'swiper/dist/css/swiper.css'
+import Cube from 'cube-ui'
 Vue.use(VueAwesomeSwiper /* { default global options } */)
 Vue.use(Ivue)
+Vue.use(Cube)
 // import VConsole from 'vconsole'
 /* import vueg from 'vueg'
 import 'vueg/css/transition-min.css'
