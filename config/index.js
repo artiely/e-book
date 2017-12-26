@@ -13,8 +13,9 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-    host: '172.16.7.248', // can be overwritten by process.env.HOST
-    port: 8089, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    // host: '172.16.7.248', // company
+    host: '192.168.199.162', // home
+    port: 8099, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
@@ -45,7 +46,7 @@ module.exports = {
     // (https://github.com/webpack/css-loader#sourcemaps)
     // In our experience, they generally work as expected,
     // just be aware of this issue when enabling this option.
-    cssSourceMap: false,
+    cssSourceMap: false
   },
 
   build: {

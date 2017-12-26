@@ -1,12 +1,6 @@
 <template>
   <div id="app" class="light page">
-    <transition v-if="inOut" :name="transitionName" mode="in-out">
-      <!-- <transition mode="in-out"> -->
-      <keep-alive>
-        <router-view class="RouterView"></router-view>
-      </keep-alive>
-    </transition>
-    <transition v-else :name="transitionName" appear>
+    <transition :name="transitionName">
       <keep-alive>
         <router-view class="RouterView"></router-view>
       </keep-alive>
@@ -19,9 +13,7 @@
     name: 'app',
     data() {
       return {
-        transitionName: 'slide-left',
-        mode: 'in-out',
-        inOut: true
+        transitionName: 'enter'
       }
     },
     watch: {
@@ -30,13 +22,13 @@
           console.log('this is router', this.$router.isBack)
           let isBack = this.$router.isBack
           if (isBack) {
-            this.transitionName = 'slide-right'
+            this.transitionName = 'leave'
             this.inOut = false
             if (val.path === '/login') {
               this.$router.push('/index')
             }
           } else {
-            this.transitionName = 'slide-left'
+            this.transitionName = 'enter'
           }
           this.$router.isBack = false
         }
@@ -50,28 +42,41 @@
   @import 'assets/skin.less';
   @import 'assets/mixin.less';
   @import 'assets/cover.less';
-  *{
-    margin: 0;padding: 0;
+  * {
+    margin: 0;
+    padding: 0;
   }
   .RouterView {
-    position: absolute;
-    width: 100%;
+    position: absolute; // width: 100%;
+    height: 100%;
     transition: all 0.28s ease-in;
     top: 0; // height: 100vh;
+    left: 0;
+    bottom: 0;
+    right: 0; // // overflow: scroll;
     background: #fff;
+    overflow: hidden; // 解决了ios下头脚拉动错误
+    transform: translateZ(0px)
   }
-   .__has-clock__{
+  .cube-scroll-wrapper {
+    background: none;
+    .cube-scroll-content {
+      background: none;
+    }
+  }
+  .__has-clock__ {
     background: #f00;
     color: #fff;
   }
   .icon {
-       width: 1em; height: 1em;
-       vertical-align: -0.15em;
-       fill: currentColor;
-       overflow: hidden;
-    }
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+  }
   #app {
-    font-family: 'microsoft Yahei','Avenir', Helvetica, Arial, sans-serif;
+    font-family: 'microsoft Yahei', 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
@@ -83,20 +88,14 @@
     .van-tabbar {
       box-shadow: 1px -1px 5px rgba(0, 0, 0, .1);
     }
-    .van-tabs__wrap {
-      box-shadow: 0 3px 5px 0px rgba(0, 0, 0, .1);
-      position: fixed;
-      top: 44px;
-      left: 0;
-      right: 0;
-      z-index: 0;
-      -webkit-transform: translateZ(0px);
-      transform: translateZ(0px);
-      transform: translate3d(0px, 0px, 0px);
-    }
+  }
+  body {
+    height: 100vh;
+    overflow: hidden;
   }
   .page {
-    background: rgb(248, 252, 247); // height: 100%;
+    background: rgb(248, 252, 247);
+    height: 100vh;
   }
   .sticker {
     height: auto;
@@ -120,17 +119,32 @@
     position: relative;
     z-index: 9;
     .b_t();
-  }
-  .slide-left-enter,
-  .slide-right-leave-active {
+  } // enter-class - string
+  // leave-class - string
+  // appear-class - string
+  // enter-to-class - string
+  // leave-to-class - string
+  // appear-to-class - string
+  // enter-active-class - string
+  // leave-active-class - string
+  // appear-active-class - string
+  .enter-enter {
     opacity: 0.5;
     -webkit-transform: scale(.5, .5);
-    transform: scale(.5, .5)
+    transform: scale(.5, .5);
   }
-  .slide-left-leave-active,
-  .slide-right-enter {
+  .leave-leave-active {
+    opacity: 0.5; // -webkit-transform: scale(.5, .5); //  transform: scale(.5, .5);
+    transform: translateX(400px);
+  }
+  .enter-leave-active {
+    opacity: 0.5;
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+  .leave-enter {
     opacity: .5;
     -webkit-transform: scale(1, 1);
-    transform: scale(1, 1)
+    transform: scale(1, 1);
   }
 </style>

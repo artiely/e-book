@@ -3,7 +3,8 @@ import Button from './button'
 import Space from './space'
 import Icon from './icon'
 import Blank from './blank'
-import Input from './Input'
+import Input from './input'
+import Scroll from './scroll'
 
 // 2.挂载组件对象
 const components = {
@@ -11,7 +12,8 @@ const components = {
   Space,
   Icon,
   Blank,
-  Input
+  Input,
+  Scroll
 }
 
 // 3.注册组件

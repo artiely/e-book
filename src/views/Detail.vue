@@ -7,24 +7,28 @@
             <i class="iconfont icon-X"></i>
           </div>
           <div slot="title" class="textover1 title-over" :class="{'fade':showTitle}">
-            <span class="tit-top" >能够动态改变结构树能够动态改变结构树</span>
+            <span class="tit-top">能够动态改变结构树能够动态改变结构树</span>
           </div>
           <div slot="right">
             <i class="iconfont icon-jia1"></i>
           </div>
         </van-nav-bar>
-        <div class="detail" :class="fontClass">
-          <h3 class="detail-title">能够动态改变结构树</h3>
-          <div class="info clearfix"> 
-            <div class="author">谭杰</div> 
-            <div class="time">07/12/20</div>
-          </div>
-          <p>能够动态改变结构树，增、删、隐藏、展示。 问题 添加事件，添加的对象是动态的，如何动态绑定 结构是无限的，需要怎么实现。 解决思路 vue子父组件间的传值实际是同一块内存地址，因此在子组件内，是可以改变父组件的值（虽然官方并不提倡这种双向数据流）,父组件a.b对象通过props传个子组件，子组件对b对象进行修改，父组件的a.b对象也会改变 可以使用递归的思想，当传入的对象，有子属性的时候，可以继续递归使用自身（需要声明name属性） 代码片段 父组件 import item from
-            './cccc.vue' 来源：掘金 著作权归作者所有。<span class="__clock__">商业转载</span>请联系作者获得授权，非商业转载请注明出处。</p>
-          <p>能够动态改变结构树，增、删、隐藏、展示。 问题 添加事件，添加的对象是动态的，如何动态绑定 结构是无限的，需要怎么实现。 解决思路 vue子父组件间的传值实际是同一块内存地址，因此在子组件内，是可以改变父组件的值（虽然官方并不提倡这种双向数据流）,父组件a.b对象通过props传个子组件，子组件对b对象进行修改，父组件的a.b对象也会改变 可以使用递归的思想，当传入的对象，有子属性的时候，可以继续递归使用自身（需要声明name属性） 代码片段 父组件 import item from
-            './cccc.vue' 来源：掘金 著作权归作者所有。<span class="__clock__">商业转载</span>请联系作者获得授权，非商业转载请注明出处。</p>
-          <p>用户名：<span class="__clock__">123</span></p>
-          <p>密 码：<span class="__clock__">456789</span></p>
+        <div class="wrapper">
+          <cube-scroll>
+            <div class="detail" :class="fontClass">
+              <h3 class="detail-title">能够动态改变结构树</h3>
+              <div class="info clearfix">
+                <div class="author">谭杰</div>
+                <div class="time">07/12/20</div>
+              </div>
+              <p>能够动态改变结构树，增、删、隐藏、展示。 问题 添加事件，添加的对象是动态的，如何动态绑定 结构是无限的，需要怎么实现。 解决思路 vue子父组件间的传值实际是同一块内存地址，因此在子组件内，是可以改变父组件的值（虽然官方并不提倡这种双向数据流）,父组件a.b对象通过props传个子组件，子组件对b对象进行修改，父组件的a.b对象也会改变 可以使用递归的思想，当传入的对象，有子属性的时候，可以继续递归使用自身（需要声明name属性） 代码片段 父组件 import item
+                from './cccc.vue' 来源：掘金 著作权归作者所有。<span class="__clock__">商业转载</span>请联系作者获得授权，非商业转载请注明出处。</p>
+              <p>能够动态改变结构树，增、删、隐藏、展示。 问题 添加事件，添加的对象是动态的，如何动态绑定 结构是无限的，需要怎么实现。 解决思路 vue子父组件间的传值实际是同一块内存地址，因此在子组件内，是可以改变父组件的值（虽然官方并不提倡这种双向数据流）,父组件a.b对象通过props传个子组件，子组件对b对象进行修改，父组件的a.b对象也会改变 可以使用递归的思想，当传入的对象，有子属性的时候，可以继续递归使用自身（需要声明name属性） 代码片段 父组件 import item
+                from './cccc.vue' 来源：掘金 著作权归作者所有。<span class="__clock__">商业转载</span>请联系作者获得授权，非商业转载请注明出处。</p>
+              <p>用户名：<span class="__clock__">123</span></p>
+              <p>密 码：<span class="__clock__">456789</span></p>
+            </div>
+          </cube-scroll>
         </div>
       </div>
     </div>
@@ -37,9 +41,9 @@
       </van-nav-bar>
       <div style="padding-top:50px">
         <label class="font-item" :class="checkFontSize.value==v.value?'active':''" v-for="(v,k) in fontSize" :key="k">
-                        <input type="radio" v-model="defaultFontSize" :value="v" name="font"/>{{v.label}}
-                        <i class="iconfont icon-mini-dui" v-show="checkFontSize.value==v.value"></i>
-                      </label>
+          <input type="radio" v-model="defaultFontSize" :value="v" name="font"/>{{v.label}}
+          <i class="iconfont icon-mini-dui" v-show="checkFontSize.value==v.value"></i>
+        </label>
       </div>
     </van-popup>
   </div>
@@ -135,29 +139,32 @@
 
 <style scoped lang="less">
   @import '../assets/mixin.less';
+  .wrapper {
+    height: 100vh;
+  }
   .detail {
     padding: 50px 10px 20px 10px;
-    .detail-title{
+    .detail-title {
       padding: 20px 0 4px 0;
     }
-    .info{
+    .info {
       color: #999;
       padding: 6px 0 2px 0;
-      .time{
+      .time {
         font-size: 10px;
       }
     }
   }
-  .title-over{
-    margin-left:40px;
-    margin-right:40px; 
+  .title-over {
+    margin-left: 40px;
+    margin-right: 40px;
     text-align: center;
     opacity: 0;
     font-size: 14px;
   }
-  .fade{
+  .fade {
     opacity: 1;
-    transition:all .6s;
+    transition: all .6s;
   }
   .icon-X {
     opacity: 0.7;

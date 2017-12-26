@@ -4,3 +4,42 @@
 .van-search__input-wrap{
   border: none
 }
+
+// 头脚的
+.van-tabs__wrap {
+  box-shadow: 0 3px 5px 0px rgba(0, 0, 0, .1);
+  position: fixed;
+  top: 44px;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  transition: .28s;
+  background: #fff;
+  z-index: 2;
+}
+.up .van-tabs__wrap {
+  top: 0px;
+}
+.footer {
+  transition: .28s;
+  z-index: 1;
+  transform: translateZ(0px)
+}
+.toggle {
+  .footer {
+    transition: .28s;
+    bottom: -50px
+  }
+}
+.van-hairline--top-bottom::after {
+  border: none
+}
+.love-h{
+  transition: .28s
+}
+.love-h.up.van-nav-bar--fixed{
+  top:-44px
+}
+.van-tabs--line{
+padding-top: 0;
+}
