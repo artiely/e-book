@@ -92,6 +92,7 @@
   body {
     height: 100vh;
     overflow: hidden;
+    line-height: 1.5;
   }
   .page {
     background: rgb(248, 252, 247);
