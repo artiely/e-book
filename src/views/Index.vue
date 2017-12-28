@@ -8,28 +8,44 @@
       </div>
       <div slot="right">
         <span class="right-item" @click="search">
-                <i class="iconfont icon-sousuo"></i>
-              </span>
+                        <i class="iconfont icon-sousuo"></i>
+                      </span>
         <span class="right-item" @click="setting">
-                <i class="iconfont icon-caidan-2"></i>
-              </span>
+                        <i class="iconfont icon-caidan-2"></i>
+                      </span>
       </div>
     </van-nav-bar>
     <div class="new-wrap">
       <div class="wrapper">
-        <cube-scroll @pulling-down="onPullingDown" :listenScroll="true" @scroll="scroll" :options="options">
+        <cube-scroll @pulling-down="onPullingDown" @pulling-up="onPullUp" :listenScroll="true" @scroll="scroll" :options="options" :data="num">
+          <div slot="pulldown" slot-scope="props">
+            <div v-if="props.pullDownRefresh" class="cube-pulldown-wrapper" :style="props.pullDownStyle">
+              <div v-if="props.beforePullDown" class="before-trigger" :style="{paddingTop: props.bubbleY + 'px'}">
+                <div>
+                  <Refresh></Refresh>
+                </div>
+              </div>
+              <div class="after-trigger" v-else>
+                <div v-if="props.isPullingDown" class="loading">
+                  <cube-loading></cube-loading>
+                </div>
+                <div v-else><span>Refresh success</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- <div slot="pulldown">下拉刷新</div> -->
           <div class="content" slot="default">
-            <van-row style="padding-top:45px;" class="grid-tit">
+            <van-row class="grid-tit">
               <swiper :options="swiperOption" class="swiper">
                 <swiper-slide v-for="(v,k) in gridList" :key="k" @click.native="goList">
                   <svg class="icon" aria-hidden="true">
-                                    <use :xlink:href="'#'+v.icon"></use>
-                                </svg>
+                                            <use :xlink:href="'#'+v.icon"></use>
+                                        </svg>
                   <p>{{v.label}}</p>
                 </swiper-slide>
               </swiper>
             </van-row>
-            <article-top></article-top>
+            <article-top :num="num"></article-top>
           </div>
         </cube-scroll>
       </div>
@@ -52,14 +68,15 @@
   import $ from 'n-zepto'
   import ArticleItem from './Article-item.vue'
   import ArticleTop from './Article-top.vue'
+  import Refresh from '../components/loading/refresh.vue'
   export default {
     name: 'app',
     data() {
       return {
         show: false,
         night: true,
-        gridList: [
-          {
+        num: 20,
+        gridList: [{
             label: '系统',
             icon: 'icon-yewuchaxun'
           },
@@ -90,7 +107,13 @@
           freeMode: true
         },
         options: {
-          probeType: 2
+          probeType: 1,
+          pullDownRefresh: {
+            stop: 44,
+            threshold: 90,
+            txt: '下拉刷新'
+          },
+          pullUpLoad: true
         },
         scrollY: 0,
         timer: null
@@ -98,10 +121,22 @@
     },
     components: {
       ArticleItem,
-      ArticleTop
+      ArticleTop,
+      Refresh
     },
     methods: {
-      onPullingDown() {},
+      onPullingDown() {
+        console.log('下拉刷新了')
+        setTimeout(() => {
+          this.num = 10
+        }, 1000)
+      },
+      onPullUp() {
+        console.log('上拉加载了')
+        setTimeout(() => {
+          this.num += 10
+        }, 2000)
+      },
       onClickLeft() {
         this.$router.push('/company')
       },
@@ -112,9 +147,9 @@
           if (currentY < -50) { // 还是解决ios下的怪异问题
             if (Math.abs(currentY) > Math.abs(this.scrollY)) {
               $('#app').addClass('toggle')
-              console.log('向下')
+              // console.log('向下')
             } else {
-              console.log('向上')
+              // console.log('向上')
               $('#app').removeClass('toggle')
             }
           }
@@ -155,12 +190,16 @@
 
 <style scoped lang="less">
   @import '../assets/mixin.less';
+  .spinner {
+    height: 40px;
+  }
   .swiper {
     padding: 14px 0;
     background: #eee;
   }
   .wrapper {
     height: 100vh;
+    padding-top: 44px;
   }
   .header {
     z-index: 1;
