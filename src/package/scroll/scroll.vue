@@ -1,4 +1,4 @@
-<template>
+<2template>
   <div ref="wrapper">
     <slot>
     </slot>

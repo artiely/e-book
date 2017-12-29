@@ -1,6 +1,6 @@
 <template>
   <div class="_refresh">
-          <p class="_copyright">群思科技提供技术支持</p>
+         
           <svg class="spinner" style="stroke: #4b8bf4;" slot="refresh-spinner" viewBox="0 0 64 64">
             <g stroke-width="7" stroke-linecap="round">
               <line x1="10" x2="10" y1="27.3836" y2="36.4931">
@@ -50,13 +50,6 @@
     margin: 0 auto;
     text-align: center;
   }
-  ._copyright {
-    font-size: 12px;
-    color: #eee;
-    text-shadow: 1px 0px 1px #fff;
-    position: relative;
-    margin-top: -40px;
-    padding-bottom: 6px;
-  }
+
 </style>
 

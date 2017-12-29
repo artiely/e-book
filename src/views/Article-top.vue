@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-for="(i,k) in num" :key="k" class="article-top" @click="toDetail">
-      <h3 class="tit">{{i}}介绍一下渐进式介绍一下渐进式介绍一下渐进式介绍一下渐进式web App</h3>
-      <div class="clearfix"><span class="user-icon fl"></span> <span class="author fl">谭杰</span></div>
-      <p class="des">每一条数据需要提供第一个select的options选项；后面的文本框需要输入类型；切换为区间输入的时候数据格式的切换，每条数据的唯一name属性。</p>
-      <p class="info"><span class="crumbs">系统 / 技术部 / 外设</span><span class="create-time">07/12/20</span></p>
+    <div v-for="(i,k) in data" :key="k" class="article-top" @click="toDetail(i)">
+      <h3 class="tit">{{i.title}}</h3>
+      <div class="clearfix"><span class="user-icon fl"></span> <span class="author fl">{{i.createByUserName}}</span></div>
+      <p class="des">{{i.content}}</p>
+      <p class="info"><span class="crumbs">系统 / 技术部 / 外设</span><span class="create-time">{{i.createDate}}</span></p>
     </div>
   </div>
 </template>
@@ -15,7 +15,10 @@
       return {}
     },
     props: {
-      data: [Array, Object],
+      data: {
+        type:[Array, Object],
+        default:{}
+      },
       num: {
         type: Number,
         default: 20
@@ -25,8 +28,9 @@
     watch: {},
     created() {},
     methods: {
-      toDetail(event) {
-        this.$emit('click', event)
+      toDetail(i, event) {
+        console.log('11', i)
+        this.$emit('to-detail', i, event)
       }
     },
     mounted() {

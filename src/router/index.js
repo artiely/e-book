@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../vuex'
+import Cookies from 'js-cookie'
 // import HelloWorld from '@/components/HelloWorld'
 import Index from '@/views/Index'
 import Home from '@/views/Home'
@@ -25,8 +27,10 @@ Router.prototype.back = function() {
   this.isBack = true
   window.history.go(-1)
 }
-console.log('router', Router)
-export default new Router({
+
+store.dispatch('getUserInfo')
+
+const router = new Router({
   scrollBehavior(to, from, savedPosition) {
     return {
       x: 0,
@@ -36,32 +40,38 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home'
+      redirect: '/home',
+      meta: {requiresAuth: true}
     },
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {requiresAuth: false}
     },
     {
       path: '/list',
       name: 'List',
-      component: List
+      component: List,
+      meta: {requiresAuth: true}
     },
     {
       path: '/company',
       name: 'Company',
-      component: Company
+      component: Company,
+      meta: {requiresAuth: true}
     },
     {
       path: '/sort',
       name: 'Sort',
-      component: Sort
+      component: Sort,
+      meta: {requiresAuth: true}
     },
     {
       path: '/detail',
       name: 'Detail',
-      component: Detail
+      component: Detail,
+      meta: {requiresAuth: true}
     },
     {
       path: '/button',
@@ -83,27 +93,48 @@ export default new Router({
       name: 'Home',
       component: Home,
       redirect: '/index',
+      meta: {requiresAuth: true},
       children: [{
         path: '/index',
         name: 'Index',
-        component: Index
+        component: Index,
+        meta: {requiresAuth: true}
       },
       {
         path: '/find',
         name: 'Find',
-        component: Find
+        component: Find,
+        meta: {requiresAuth: true}
       },
       {
         path: '/love',
         name: 'Love',
-        component: Love
+        component: Love,
+        meta: {requiresAuth: true}
       },
       {
         path: '/user',
         name: 'User',
-        component: User
+        component: User,
+        meta: {requiresAuth: true}
       }
       ]
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    let _token = Cookies.getJSON('userInfo')
+    if (_token && _token.id) {
+      next({query: {redirect: to.fullPath}})
+    } else {
+      next({
+        path: '/login',
+        query: {redirect: to.fullPath}
+      })
+    }
+  } else {
+    next()
+  }
+})
+export default router
