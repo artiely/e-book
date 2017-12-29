@@ -1,12 +1,12 @@
 import * as types from '../mutation-types'
 import api from '@/api/api'
+import Cookies from 'js-cookie'
 
 // initial state
 const state = {
   userInfo: { // 用户信息
-    _id: null
   },
-  department: ['技术部', '财务部', '商务部', '研发部', '市场部'],
+  department: [],
   titleList: ['电脑', '病毒', '系统', '软件', '邮件', '网络', '视频会议'],
   category: ['系统版本', '系统介质', '账户相关', '注意事项'],
   checkFontSize: {
@@ -28,12 +28,18 @@ const mutations = {
     state.userInfo = { ...state.userInfo,
       ...payload
     }
+    Cookies.set('userInfo', { ...state.userInfo,
+      ...payload
+    })
   },
   [types.SORT_TITLE_LIST](state, payload) {
     state.titleList = payload
   },
   [types.SET_FONT_SIZE](state, payload) {
     state.checkFontSize = payload
+  },
+  [types.GET_CATEGORY_LIST](state, payload) {
+    state.department = payload
   }
 }
 
@@ -44,12 +50,13 @@ const actions = {
   }, payload) {
     if (payload) {
       commit(types.GET_USER_INFO, payload)
+    } else {
+      api.GET_USER_INFO().then(res => {
+        if (res.code === 0) {
+          commit(types.GET_USER_INFO, res.user)
+        }
+      })
     }
-    api.GET_INFO().then(res => {
-      if (res.code === 0) {
-        commit(types.GET_USER_INFO, res.data)
-      }
-    })
   },
   sortTitleList({
     commit
@@ -60,6 +67,11 @@ const actions = {
     commit
   }, payload) {
     commit(types.SET_FONT_SIZE, payload)
+  },
+  getCategoryList({
+    commit
+  }, payload) {
+    commit(types.GET_CATEGORY_LIST, payload)
   }
 }
 

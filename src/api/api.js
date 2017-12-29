@@ -10,11 +10,23 @@ import fetch from './fetch'
  */
 const LOGIN = params => {
   return fetch({
-    url: '/api/user/login',
+    url: '/sys/login',
     method: 'post',
     data: params
   })
 }
+
+/**
+ * 获取用户的信息
+ */
+const GET_USER_INFO = params => {
+  return fetch({
+    url: '/sys/user/info',
+    method: 'get',
+    params: params
+  })
+}
+
 /**
  * 注册
  * @param {String} username
@@ -28,49 +40,29 @@ const REGISTER = params => {
     data: params
   })
 }
+
 /**
- * 注册
- * @param {String} username
- * @param {String} password
- * @param {String} code
+ * 获取文章列表
+ * @param {String,Number} page
+ * @param {String,Number} limit
  */
-const GET_INFO = params => {
+const GET_ARTICLE_LIST = params => {
   return fetch({
-    url: '/api/user/info',
-    method: 'get',
-    params: params
-  })
-}
-/**
- * 获取消息列表
- * @param {*}
- */
-const GET_MSG_LIST = params => {
-  return fetch({
-    url: '/api/user/msglist',
+    url: '/klarticle/list',
     method: 'get',
     params: params
   })
 }
 
 /**
- * 保存消息
- * @param {Object} {text:''}
+ * 获取类别列表
+ * @param {String,Number} page
+ * @param {String,Number} limit
+ * @param {String,Number} level
  */
-const POST_MSG = params => {
+const GET_CATEGORY_LIST = params => {
   return fetch({
-    url: '/api/user/msg',
-    method: 'post',
-    data: params
-  })
-}
-/**
- * 获取用户列表
- * @param {String} type 1客户2工程师
- */
-const GET_USER_LIST = params => {
-  return fetch({
-    url: '/api/user/list',
+    url: '/klcategory/list',
     method: 'get',
     params: params
   })
@@ -79,10 +71,9 @@ const GET_USER_LIST = params => {
 const apiList = {
   LOGIN,
   REGISTER,
-  GET_INFO,
-  GET_MSG_LIST,
-  POST_MSG,
-  GET_USER_LIST
+  GET_ARTICLE_LIST,
+  GET_USER_INFO,
+  GET_CATEGORY_LIST
 }
 
 export default apiList

@@ -75,13 +75,5 @@
 .wrapper{
   height: 100vh;
 }
-  .category {
-    padding: 10px 0;
-    text-align: center;
-    background: #fff;
-    border-radius: 4px;
-    margin: 6px 0;
-    box-shadow: 1px 3px 6px rgba(227, 247, 234, 0.5);
-    font-size: 14px;
-  }
+ 
 </style>

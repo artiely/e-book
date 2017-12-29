@@ -10,19 +10,25 @@
         <i class="iconfont icon-paixu"></i>
       </div>
     </van-nav-bar>
-    <van-tabs class="tab">
-      <van-tab v-for="(index,k) in department" :key="k" :title="index">
-        <div style="margin-top:-44px;">
-          <div class="wrapper">
-            <cube-scroll :options="options" :listenScroll="true" @scroll="scroll">
-              <div style="height:44px;"></div>
-              <article-top @click="toDetail"></article-top>
-              <div style="height:120px"></div>
-            </cube-scroll>
+    <div>
+      <div class="wrapper">
+        <cube-scroll @pulling-down="onPullingDown" @pulling-up="onPullUp" :listenScroll="true" @scroll="scroll" :options="options" :data="articleList" ref="scroller">
+          <van-row>
+            <van-col v-for="(v,k) in department" :key="k" span="8">
+              <div class="category textover1">{{v.name}}</div>
+            </van-col>
+          </van-row>
+          <article-top @to-detail="toDetail" :data="articleList"></article-top>
+        </cube-scroll>
+      </div>
+    </div>
+    <!-- <van-tabs class="tab">
+        <van-tab v-for="(v,k) in department" :key="k" :title="v.name">
+          <div>
+           
           </div>
-        </div>
-      </van-tab>
-    </van-tabs>
+        </van-tab>
+      </van-tabs> -->
   </div>
 </template>
 <script>
@@ -34,7 +40,25 @@
       return {
         titles: [],
         options: {
-          probeType: 2
+          probeType: 2,
+          pullDownRefresh: {
+            stop: 44,
+            threshold: 70,
+            txt: '刷新成功'
+          },
+          pullUpLoad: {
+            threshold: -50,
+            txt: {
+              more: '上拉加载更多...',
+              noMore: '———— 我就是底线 ————'
+            }
+          }
+        },
+        articleList: [],
+        stop: false,
+        params: {
+          page: 1,
+          limit: 10
         }
       }
     },
@@ -46,8 +70,46 @@
         return this.$store.state.user.department
       }
     },
-    created() {},
+    created() {
+      this.getData({
+        page: 1,
+        limit: 10
+      })
+    },
     methods: {
+      onPullingDown() {
+        console.log('下拉刷新了')
+        this.getData({
+          page: 1,
+          limit: 10
+        })
+      },
+      onPullUp() {
+        console.log('上拉加载了')
+        if (!this.stop) {
+          this.params.page++
+        }
+        this.getData(this.params)
+      },
+      getData(params) {
+        this.$api.GET_ARTICLE_LIST(params).then(res => {
+          if (res.code === 0) {
+            if (params.page === 1) {
+              this.articleList = res.page.list
+            } else {
+              if (res.page.list.length === 0) {
+                // 如果没有新数据
+                this.stop = true
+                console.log('ssss', this.$refs.scroller)
+                this.$refs.scroller.forceUpdate()
+              } else {
+                this.stop = false
+                this.articleList = this.articleList.concat(res.page.list)
+              }
+            }
+          } else {}
+        })
+      },
       scroll(v) {
         let currentY = v.y
         console.log('currentY', currentY, this.scrollY)
@@ -55,14 +117,14 @@
           if (currentY < -50) { // 还是解决ios下的怪异问题
             if (Math.abs(currentY) > Math.abs(this.scrollY)) {
               $('#app').addClass('toggle')
-              $('.love-h').addClass('up')
-              $('.tab').addClass('up')
-              console.log('向下')
+              // $('.love-h').addClass('up')
+              // $('.tab').addClass('up')
+              // console.log('向下')
             } else {
-              console.log('向上')
+              // console.log('向上')
               $('#app').removeClass('toggle')
-              $('.love-h').removeClass('up')
-              $('.tab').removeClass('up')
+              // $('.love-h').removeClass('up')
+              // $('.tab').removeClass('up')
             }
           }
           this.scrollY = currentY
@@ -74,9 +136,14 @@
       onClickLeft() {
         this.$router.back()
       },
-      toDetail() {
-        this.$router.push('/detail')
-      }
+      toDetail(i, event) {
+        this.$router.push({
+          name: 'Detail',
+          params: {
+            info: i
+          }
+        })
+      },
     },
     mounted() {}
   }
@@ -84,12 +151,9 @@
 
 <style scoped lang="less">
   .wrapper {
-    overflow: hidden;
-    position: absolute;
-    top: 88px;
-    left: 0;
-    right: 0;
-    bottom: 0;
     height: 100vh;
+    padding-top: 44px;
+    padding-bottom: 0;
+    box-sizing: border-box
   }
 </style>

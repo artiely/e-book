@@ -86,6 +86,11 @@
       if (Cookies.getJSON('active')) {
         this.active = Cookies.getJSON('active').active
       }
+      this.$api.GET_CATEGORY_LIST({page: 1, limit: 20, level: 2}).then(res => {
+        if (res.code === 0) {
+          this.$store.dispatch('getCategoryList', res.page.list)
+        }
+      })
     },
     methods: {
       onClickLeft() {

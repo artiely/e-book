@@ -8,44 +8,48 @@
       </div>
       <div slot="right">
         <span class="right-item" @click="search">
-                        <i class="iconfont icon-sousuo"></i>
-                      </span>
-        <span class="right-item" @click="setting">
-                        <i class="iconfont icon-caidan-2"></i>
-                      </span>
+                                      <i class="iconfont icon-sousuo"></i>
+                                    </span>
+        <!-- <span class="right-item" @click="setting">
+                                      <i class="iconfont icon-caidan-2"></i>
+                                    </span> -->
       </div>
     </van-nav-bar>
     <div class="new-wrap">
       <div class="wrapper">
-        <cube-scroll @pulling-down="onPullingDown" @pulling-up="onPullUp" :listenScroll="true" @scroll="scroll" :options="options" :data="num">
-          <div slot="pulldown" slot-scope="props">
-            <div v-if="props.pullDownRefresh" class="cube-pulldown-wrapper" :style="props.pullDownStyle">
-              <div v-if="props.beforePullDown" class="before-trigger" :style="{paddingTop: props.bubbleY + 'px'}">
-                <div>
-                  <Refresh></Refresh>
+        <cube-scroll @pulling-down="onPullingDown" @pulling-up="onPullUp" :listenScroll="true" @scroll="scroll" :options="options" :data="articleList" ref="scroll">
+          <!--  <div slot="pulldown" slot-scope="props">
+              <div v-if="props.pullDownRefresh" class="cube-pulldown-wrapper" :style="props.pullDownStyle">
+                <div v-if="props.beforePullDown" class="before-trigger" :style="{paddingTop: props.bubbleY + 'px'}">
+                  <div>
+                     <p class="_copyright">群思科技提供技术支持</p>
+                    <div v-show="props.bubbleY<70"><i class="iconfont icon-xialashuaxin" ></i>下拉刷新</div>
+                    <div  v-show="props.bubbleY>70"><i class="iconfont icon-xialashuaxin1"></i>松开加载</div>
+                    
+                    
+                  </div>
+                </div>
+                <div class="after-trigger" v-else>
+                  <div v-if="props.isPullingDown" class="loading">
+                    <cube-loading></cube-loading>
+                  </div>
+                  <div v-else><span class="refesh_success">刷新成功</span></div>
                 </div>
               </div>
-              <div class="after-trigger" v-else>
-                <div v-if="props.isPullingDown" class="loading">
-                  <cube-loading></cube-loading>
-                </div>
-                <div v-else><span>Refresh success</span></div>
-              </div>
-            </div>
-          </div>
+            </div> -->
           <!-- <div slot="pulldown">下拉刷新</div> -->
           <div class="content" slot="default">
             <van-row class="grid-tit">
               <swiper :options="swiperOption" class="swiper">
                 <swiper-slide v-for="(v,k) in gridList" :key="k" @click.native="goList">
-                  <svg class="icon" aria-hidden="true">
-                                            <use :xlink:href="'#'+v.icon"></use>
-                                        </svg>
+                  <!-- <svg class="icon" aria-hidden="true">
+                                                          <use :xlink:href="'#'+v.icon"></use>
+                                                      </svg> -->
                   <p>{{v.label}}</p>
                 </swiper-slide>
               </swiper>
             </van-row>
-            <article-top :num="num"></article-top>
+            <article-top :data="articleList" @to-detail="toDetail"></article-top>
           </div>
         </cube-scroll>
       </div>
@@ -75,8 +79,10 @@
       return {
         show: false,
         night: true,
+        swHeight: 0,
         num: 20,
-        gridList: [{
+        gridList: [
+          {
             label: '系统',
             icon: 'icon-yewuchaxun'
           },
@@ -110,13 +116,25 @@
           probeType: 1,
           pullDownRefresh: {
             stop: 44,
-            threshold: 90,
-            txt: '下拉刷新'
+            threshold: 70,
+            txt: '刷新成功'
           },
-          pullUpLoad: true
+          pullUpLoad: {
+            threshold: -50,
+            txt: {
+              more: '上拉加载更多...',
+              noMore: '———— 我就是底线 ————'
+            }
+          }
         },
         scrollY: 0,
-        timer: null
+        timer: null,
+        articleList: [],
+        stop: false,
+        params: {
+          page: 1,
+          limit: 10
+        }
       }
     },
     components: {
@@ -127,15 +145,17 @@
     methods: {
       onPullingDown() {
         console.log('下拉刷新了')
-        setTimeout(() => {
-          this.num = 10
-        }, 1000)
+        this.getData({
+          page: 1,
+          limit: 10
+        })
       },
       onPullUp() {
         console.log('上拉加载了')
-        setTimeout(() => {
-          this.num += 10
-        }, 2000)
+        if (!this.stop) {
+          this.params.page++
+        }
+        this.getData(this.params)
       },
       onClickLeft() {
         this.$router.push('/company')
@@ -171,15 +191,45 @@
           oApp.addClass('light')
         }
       },
-      toDetail() {
-        this.$router.push('/detail')
+      toDetail(i, event) {
+        this.$router.push({
+          name: 'Detail',
+          params: {
+            info: i
+          }
+        })
       },
       search() {
         this.$router.push('/find')
       },
       setting() {
         this.show = true
+      },
+      getData(params) {
+        this.$api.GET_ARTICLE_LIST(params).then(res => {
+          if (res.code === 0) {
+            if (params.page === 1) {
+              this.articleList = res.page.list
+            } else {
+              if (res.page.list.length === 0) {
+                // 如果没有新数据
+                this.stop = true
+                console.log('sssssssssssssss', this.$refs.scroll)
+                this.$refs.scroll.forceUpdate()
+              } else {
+                this.stop = false
+                this.articleList = this.articleList.concat(res.page.list)
+              }
+            }
+          } else {}
+        })
       }
+    },
+    created() {
+      this.getData({
+        page: 1,
+        limit: 10
+      })
     },
     mounted() {
       this.$nextTick(() => {})
@@ -196,10 +246,13 @@
   .swiper {
     padding: 14px 0;
     background: #eee;
+    box-sizing: border-box;
   }
   .wrapper {
     height: 100vh;
     padding-top: 44px;
+    padding-bottom: 0px;
+    box-sizing: border-box;
   }
   .header {
     z-index: 1;
