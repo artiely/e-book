@@ -29,7 +29,9 @@ Router.prototype.back = function() {
 }
 
 store.dispatch('getUserInfo')
-
+let __listParams = Cookies.getJSON('__listParams')
+store.dispatch('setListParams', __listParams)
+console.log('123', store)
 const router = new Router({
   scrollBehavior(to, from, savedPosition) {
     return {
@@ -124,7 +126,7 @@ const router = new Router({
 })
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
-    let _token = Cookies.getJSON('userInfo')
+    let _token = Cookies.getJSON('__userInfo')
     if (_token && _token.id) {
       next({query: {redirect: to.fullPath}})
     } else {

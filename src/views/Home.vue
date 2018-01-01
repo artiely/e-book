@@ -11,19 +11,19 @@
           <i class="iconfont icon-toutiao"></i>
         </div>
       </van-tabbar-item>
-      <van-tabbar-item icon="chat" dot to="love">
+      <van-tabbar-item icon="chat"  to="love">
         <span>专栏</span>
         <div slot="icon" slot-scope="props">
           <i class="iconfont icon-zhuanlan_jiemu"></i>
         </div>
       </van-tabbar-item>
-      <van-tabbar-item icon="records" info="5" to="find">
+      <van-tabbar-item icon="records"  to="find">
         <span>发现</span>
         <div slot="icon" slot-scope="props">
           <i class="iconfont icon-faxian"></i>
         </div>
       </van-tabbar-item>
-      <van-tabbar-item icon="gold-coin" info="20" to="user">
+      <van-tabbar-item icon="gold-coin"  to="user">
         <span>我的</span>
         <div slot="icon" slot-scope="props">
           <i class="iconfont icon-wode"></i>
@@ -86,11 +86,7 @@
       if (Cookies.getJSON('active')) {
         this.active = Cookies.getJSON('active').active
       }
-      this.$api.GET_CATEGORY_LIST({page: 1, limit: 20, level: 2}).then(res => {
-        if (res.code === 0) {
-          this.$store.dispatch('getCategoryList', res.page.list)
-        }
-      })
+      this.$store.dispatch('getCategoryList')
     },
     methods: {
       onClickLeft() {

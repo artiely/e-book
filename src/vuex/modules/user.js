@@ -9,10 +9,14 @@ const state = {
   department: [],
   titleList: ['电脑', '病毒', '系统', '软件', '邮件', '网络', '视频会议'],
   category: ['系统版本', '系统介质', '账户相关', '注意事项'],
+  category_1: [],
+  category_2: [],
+  category_3: [],
   checkFontSize: {
     value: 14,
     label: '默认字体'
-  }
+  },
+  listParams: [] // list页面参数
 }
 
 // getters
@@ -23,12 +27,10 @@ const getters = {
 // mutations
 const mutations = {
   [types.GET_USER_INFO](state, payload) {
-    console.log('this is payload', payload)
-    console.log('this is state', state)
     state.userInfo = { ...state.userInfo,
       ...payload
     }
-    Cookies.set('userInfo', { ...state.userInfo,
+    Cookies.set('__userInfo', { ...state.userInfo,
       ...payload
     })
   },
@@ -38,8 +40,18 @@ const mutations = {
   [types.SET_FONT_SIZE](state, payload) {
     state.checkFontSize = payload
   },
-  [types.GET_CATEGORY_LIST](state, payload) {
-    state.department = payload
+  [types.GET_CATEGORY_LIST_1](state, payload) {
+    state.category_1 = payload
+  },
+  [types.GET_CATEGORY_LIST_2](state, payload) {
+    state.category_2 = payload
+  },
+  [types.GET_CATEGORY_LIST_3](state, payload) {
+    state.category_3 = payload
+  },
+  [types.SET_LIST_PARAMS](state, payload) {
+    state.listParams = payload
+    Cookies.set('__listParams', payload)
   }
 }
 
@@ -70,8 +82,25 @@ const actions = {
   },
   getCategoryList({
     commit
-  }, payload) {
-    commit(types.GET_CATEGORY_LIST, payload)
+  }) {
+    api.GET_CATEGORY_LIST({page: 1, limit: 200, level: 1}).then(res => {
+      if (res.code === 0) {
+        commit(types.GET_CATEGORY_LIST_1, res.page.list) // 获取公司
+      }
+    })
+    api.GET_CATEGORY_LIST({page: 1, limit: 200, level: 2}).then(res => {
+      if (res.code === 0) {
+        commit(types.GET_CATEGORY_LIST_2, res.page.list) // 获取公司
+      }
+    })
+    api.GET_CATEGORY_LIST({page: 1, limit: 200, level: 3}).then(res => {
+      if (res.code === 0) {
+        commit(types.GET_CATEGORY_LIST_3, res.page.list) // 获取公司
+      }
+    })
+  },
+  setListParams({commit}, payload) {
+    commit(types.SET_LIST_PARAMS, payload)
   }
 }
 

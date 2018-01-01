@@ -1,51 +1,51 @@
 <template>
   <div class="index page">
     <van-nav-bar ref="header" class="header shadow" fixed @click-left="onClickLeft">
-      <div slot="left" class="header-left">
+      <!-- <div slot="left" class="header-left">
         <i class="iconfont icon-weibiaoti35"></i> 全部公司
-      </div>
+      </div> -->
       <div slot="title">
       </div>
       <div slot="right">
         <span class="right-item" @click="search">
-                                      <i class="iconfont icon-sousuo"></i>
-                                    </span>
+            <i class="iconfont icon-sousuo"></i>
+          </span>
         <!-- <span class="right-item" @click="setting">
-                                      <i class="iconfont icon-caidan-2"></i>
-                                    </span> -->
+            <i class="iconfont icon-caidan-2"></i>
+          </span> -->
       </div>
     </van-nav-bar>
     <div class="new-wrap">
       <div class="wrapper">
         <cube-scroll @pulling-down="onPullingDown" @pulling-up="onPullUp" :listenScroll="true" @scroll="scroll" :options="options" :data="articleList" ref="scroll">
           <!--  <div slot="pulldown" slot-scope="props">
-              <div v-if="props.pullDownRefresh" class="cube-pulldown-wrapper" :style="props.pullDownStyle">
-                <div v-if="props.beforePullDown" class="before-trigger" :style="{paddingTop: props.bubbleY + 'px'}">
-                  <div>
-                     <p class="_copyright">群思科技提供技术支持</p>
-                    <div v-show="props.bubbleY<70"><i class="iconfont icon-xialashuaxin" ></i>下拉刷新</div>
-                    <div  v-show="props.bubbleY>70"><i class="iconfont icon-xialashuaxin1"></i>松开加载</div>
-                    
-                    
-                  </div>
-                </div>
-                <div class="after-trigger" v-else>
-                  <div v-if="props.isPullingDown" class="loading">
-                    <cube-loading></cube-loading>
-                  </div>
-                  <div v-else><span class="refesh_success">刷新成功</span></div>
-                </div>
-              </div>
-            </div> -->
+                    <div v-if="props.pullDownRefresh" class="cube-pulldown-wrapper" :style="props.pullDownStyle">
+                      <div v-if="props.beforePullDown" class="before-trigger" :style="{paddingTop: props.bubbleY + 'px'}">
+                        <div>
+                           <p class="_copyright">群思科技提供技术支持</p>
+                          <div v-show="props.bubbleY<70"><i class="iconfont icon-xialashuaxin" ></i>下拉刷新</div>
+                          <div  v-show="props.bubbleY>70"><i class="iconfont icon-xialashuaxin1"></i>松开加载</div>
+                          
+                          
+                        </div>
+                      </div>
+                      <div class="after-trigger" v-else>
+                        <div v-if="props.isPullingDown" class="loading">
+                          <cube-loading></cube-loading>
+                        </div>
+                        <div v-else><span class="refesh_success">刷新成功</span></div>
+                      </div>
+                    </div>
+                  </div> -->
           <!-- <div slot="pulldown">下拉刷新</div> -->
           <div class="content" slot="default">
             <van-row class="grid-tit">
               <swiper :options="swiperOption" class="swiper">
-                <swiper-slide v-for="(v,k) in gridList" :key="k" @click.native="goList">
+                <swiper-slide v-for="(v,k) in category_2" :key="k" @click.native="goList(v)">
                   <!-- <svg class="icon" aria-hidden="true">
-                                                          <use :xlink:href="'#'+v.icon"></use>
-                                                      </svg> -->
-                  <p>{{v.label}}</p>
+                      <use :xlink:href="'#'+v.icon"></use>
+                  </svg> -->
+                  <p class="textover1">{{v.name}}</p>
                 </swiper-slide>
               </swiper>
             </van-row>
@@ -81,35 +81,12 @@
         night: true,
         swHeight: 0,
         num: 20,
-        gridList: [
-          {
-            label: '系统',
-            icon: 'icon-yewuchaxun'
-          },
-          {
-            label: '邮件',
-            icon: 'icon-rizhi'
-          },
-          {
-            label: '外设',
-            icon: 'icon-tiaochaziliaoguanli'
-          },
-          {
-            label: '软件',
-            icon: 'icon-renlianduibi'
-          },
-          {
-            label: '现场',
-            icon: 'icon-kehuweizhixinxicaiji'
-          },
-          {
-            label: '其他',
-            icon: 'icon-gaofengxianmingdanchaxun'
-          }
-        ],
+        gridList: [],
         swiperOption: {
-          slidesPerView: 4.7,
+          slidesPerView: 4,
           spaceBetween: 30,
+          // slidesPerView: 'auto',
+          // centeredSlides: true,
           freeMode: true
         },
         options: {
@@ -141,6 +118,14 @@
       ArticleItem,
       ArticleTop,
       Refresh
+    },
+    computed: {
+      department() {
+        return this.$store.state.user.department
+      },
+      category_2() {
+        return this.$store.state.user.category_2
+      }
     },
     methods: {
       onPullingDown() {
@@ -176,8 +161,14 @@
           this.scrollY = currentY
         }, 1000 / 60)
       },
-      goList() {
-        this.$router.push('/list')
+      goList(v) {
+        this.$store.dispatch('setListParams', v)
+        this.$router.push({
+          name: 'List',
+          params: {
+            __v: v
+          }
+        })
       },
       skinSwitch() {
         let oApp = $('#app')
@@ -214,7 +205,6 @@
               if (res.page.list.length === 0) {
                 // 如果没有新数据
                 this.stop = true
-                console.log('sssssssssssssss', this.$refs.scroll)
                 this.$refs.scroll.forceUpdate()
               } else {
                 this.stop = false
@@ -242,11 +232,6 @@
   @import '../assets/mixin.less';
   .spinner {
     height: 40px;
-  }
-  .swiper {
-    padding: 14px 0;
-    background: #eee;
-    box-sizing: border-box;
   }
   .wrapper {
     height: 100vh;
@@ -306,18 +291,5 @@
       }
     }
   }
-  .grid-tit {
-    text-align: center;
-    .van-col.van-col-8 {
-      padding: 8px 0;
-      box-sizing: border-box;
-    }
-    .icon {
-      font-size: 35px;
-    }
-    p {
-      font-size: 14px;
-      margin: 0;
-    }
-  }
+ 
 </style>
