@@ -45,6 +45,9 @@ const REGISTER = params => {
  * 获取文章列表
  * @param {String,Number} page
  * @param {String,Number} limit
+ * @param {String,Number} category_id1
+ * @param {String,Number} category_id2
+ * @param {String,Number} category_id3
  */
 const GET_ARTICLE_LIST = params => {
   return fetch({

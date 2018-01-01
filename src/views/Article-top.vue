@@ -16,8 +16,8 @@
     },
     props: {
       data: {
-        type:[Array, Object],
-        default:{}
+        type: [Array, Object],
+        default: {}
       },
       num: {
         type: Number,

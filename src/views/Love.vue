@@ -22,13 +22,6 @@
         </cube-scroll>
       </div>
     </div>
-    <!-- <van-tabs class="tab">
-        <van-tab v-for="(v,k) in department" :key="k" :title="v.name">
-          <div>
-           
-          </div>
-        </van-tab>
-      </van-tabs> -->
   </div>
 </template>
 <script>
@@ -100,7 +93,6 @@
               if (res.page.list.length === 0) {
                 // 如果没有新数据
                 this.stop = true
-                console.log('ssss', this.$refs.scroller)
                 this.$refs.scroller.forceUpdate()
               } else {
                 this.stop = false
@@ -143,7 +135,7 @@
             info: i
           }
         })
-      },
+      }
     },
     mounted() {}
   }

@@ -27,7 +27,8 @@
     "vue-router": "^3.0.1",
     "vuedraggable": "^2.15.0",
     "vueg": "^1.2.9",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vuex-persistedstate": "^2.4.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
