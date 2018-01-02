@@ -64,6 +64,9 @@
       background: none;
     }
   }
+  li.van-picker-column--selected{
+    background: #eee
+  }
   .__has-clock__ {
     background: #f00;
     color: #fff;

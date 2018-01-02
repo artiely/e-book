@@ -15,14 +15,14 @@
         </van-nav-bar>
         <div class="wrapper">
           <!-- <cube-scroll> -->
-            <div class="detail" :class="fontClass">
-              <h3 class="detail-title">{{info.title}}</h3>
-              <div class="info clearfix">
-                <div class="author">{{info.createByUserName}}</div>
-                <div class="time">{{info.createDate}}</div>
-              </div>
-              {{info.content}}
+          <div class="detail" :class="fontClass">
+            <h3 class="detail-title">{{info.title}}</h3>
+            <div class="info clearfix">
+              <div class="author">{{info.createByUserName}}</div>
+              <div class="time">{{info.createDate}}</div>
             </div>
+            <div v-html="info.content"></div>
+          </div>
           <!-- </cube-scroll> -->
         </div>
       </div>
@@ -36,9 +36,9 @@
       </van-nav-bar>
       <div style="padding-top:50px">
         <label class="font-item" :class="checkFontSize.value==v.value?'active':''" v-for="(v,k) in fontSize" :key="k">
-            <input type="radio" v-model="defaultFontSize" :value="v" name="font"/>{{v.label}}
-            <i class="iconfont icon-mini-dui" v-show="checkFontSize.value==v.value"></i>
-          </label>
+                      <input type="radio" v-model="defaultFontSize" :value="v" name="font"/>{{v.label}}
+                      <i class="iconfont icon-mini-dui" v-show="checkFontSize.value==v.value"></i>
+                    </label>
       </div>
     </van-popup>
   </div>
@@ -101,7 +101,6 @@
     },
     created() {
       this.defaultFontSize = this.checkFontSize
-      console.log(this.checkFontSize)
     },
     methods: {
       onClickRight() {
@@ -116,10 +115,9 @@
     },
     mounted() {
       this.$nextTick(() => {
-        $('.__clock__').html('<span class="__has-clock__">加密文本内容</span>')
         let offsetTop = $('.detail-title').offset().top
-        $(window).on('scroll', () => {
-          let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        $('.wrapper').on('scroll', () => {
+          let scrollTop = $('.wrapper')[0].scrollTop
           setTimeout(() => {
             if (scrollTop > offsetTop) {
               this.showTitle = true
@@ -132,6 +130,9 @@
     },
     activated() {
       this.info = this.$route.params.info
+      this.$nextTick(function() {
+        $('.__lock__').html('<span class="__has-clock__">加密文本内容</span>')
+      })
     }
   }
 </script>
@@ -140,6 +141,8 @@
   @import '../assets/mixin.less';
   .wrapper {
     height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden
   }
   .detail {
     padding: 50px 10px 20px 10px;

@@ -13,7 +13,9 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 // require styles
 import 'swiper/dist/css/swiper.css'
 import Cube from 'cube-ui'
+// import VueScroller from 'vue-scroller'
 // import VConsole from 'vconsole'
+// Vue.use(VueScroller)
 Vue.use(VueAwesomeSwiper /* { default global options } */)
 Vue.use(Ivue)
 Vue.use(Cube)

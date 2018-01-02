@@ -85,8 +85,6 @@
         swiperOption: {
           slidesPerView: 4,
           spaceBetween: 30,
-          // slidesPerView: 'auto',
-          // centeredSlides: true,
           freeMode: true
         },
         options: {
@@ -129,14 +127,14 @@
     },
     methods: {
       onPullingDown() {
-        console.log('下拉刷新了')
+        // console.log('下拉刷新了')
         this.getData({
           page: 1,
           limit: 10
         })
       },
       onPullUp() {
-        console.log('上拉加载了')
+        // console.log('上拉加载了')
         if (!this.stop) {
           this.params.page++
         }
@@ -147,7 +145,7 @@
       },
       scroll(v) {
         let currentY = v.y
-        console.log('currentY', currentY, this.scrollY)
+        // console.log('currentY', currentY, this.scrollY)
         this.timer = setTimeout(() => {
           if (currentY < -50) { // 还是解决ios下的怪异问题
             if (Math.abs(currentY) > Math.abs(this.scrollY)) {
@@ -223,7 +221,7 @@
     },
     mounted() {
       this.$nextTick(() => {})
-      console.log(this.$store)
+      // console.log(this.$store)
     }
   }
 </script>
