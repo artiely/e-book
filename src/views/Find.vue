@@ -1,32 +1,219 @@
 <template>
   <div class="index page">
-    <van-nav-bar ref="header" class="header"  fixed @click-left="onClickLeft">
+    <van-nav-bar ref="header" class="header" fixed @click-left="onClickLeft">
       <div slot="left" class="header-left">
         <i class="iconfont icon-fanhui"></i>
       </div>
       <div slot="title">
       </div>
-      <div slot="right" @click="goCompany">
-        <i class="iconfont  icon-weibiaoti35"></i>全部公司
+      <div slot="right">
+        <span @click="filter">
+                                          <i class="iconfont  icon-weibiaoti35"></i>
+                                        <span>{{company.text}}</span>
+        </span>
+        <span @click="filter2">
+                                          <i class="iconfont  icon-weibiaoti35"></i>
+                                        <span>{{choice_category.text}}</span>
+        </span>
+        <span class="right-item" @click="showSearch">
+                    <i class="iconfont icon-sousuo"></i>
+                  </span>
       </div>
     </van-nav-bar>
-    <van-search style="position:fixed;top:44px;left:0;right:0" v-model="value" placeholder="请输入关键词" :showAction="true" @search="onSearch">
-    </van-search>
+    <div class="wrapper">
+      <cube-scroll :data="articleList">
+        <article-top :data="articleList" @to-detail="toDetail"></article-top>
+      </cube-scroll>
+    </div>
+    <van-popup v-model="show" style="height:80%;width:100%" position="bottom">
+      <van-picker :visibile-column-count="8" :columns="category_1" @change="onChange" show-toolbar title="选择公司" @cancel="onCancel" @confirm="onConfirm" />
+    </van-popup>
+    <van-popup v-model="show2" style="height:80%;width:100%" position="bottom">
+      <van-picker :visibile-column-count="8" :columns="category_2" @change="onChange2" show-toolbar title="选择公司" @cancel="onCancel2" @confirm="onConfirm2" />
+    </van-popup>
+    <van-popup v-model="show3" style="height:100%;width:80%" position="right">
+      <van-search style="position:absolute;top:0px;left:0;right:0" v-model="value" placeholder="请输入关键词" :showAction="true" @search="onSearch">
+      </van-search>
+      <div class="wrapper">
+<cube-scroll>
+          <van-checkbox-group v-model="keywordsResult">
+        <van-cell-group>
+          <van-cell v-for="(v, index) in keywordList" :key="index" >
+            <van-checkbox shape="square" :name="v.id">{{ v.name }}</van-checkbox>
+          </van-cell>
+        </van-cell-group>
+      </van-checkbox-group>
+        </cube-scroll>
+      </div>
+      
+      
+    </van-popup>
   </div>
 </template>
 <script>
+  import ArticleTop from './Article-top.vue'
   export default {
     name: 'app',
     data() {
       return {
-        value: ''
+        value: '',
+        show: false,
+        show2: false,
+        show3: false,
+        keywordsResult: [],
+        company: {
+          text: '全部公司',
+          id: ''
+        },
+        articleList: [],
+        category_2: [],
+        choice_category: {
+          text: '全部类目',
+          id: ''
+        },
+        keywordList: []
       }
     },
-    computed: {},
+    components: {
+      ArticleTop
+    },
+    watch: {
+      'company.id': {
+        handler(val) {
+          if (val === '') {
+            this._init_c_2()
+            return
+          }
+          this.getCategory_2()
+        }
+      },
+      'params': {
+        handler() {
+          this.search()
+        }
+      },
+      'value': {
+        handler() {
+          this._getKeyword()
+        }
+      }
+    },
+    computed: {
+      params() {
+        return {
+          page: 1,
+          limit: 20,
+          category_id1: this.company.id,
+          category_id2: this.choice_category.id,
+          keywordIds: this.keywordsResult.join(',')
+        }
+      },
+      params_category_2() {
+        return {
+          page: 0,
+          limit: 1000,
+          parent_id: this.company.id
+        }
+      },
+      category_1() {
+        let obj = this.$store.state.user.category_1
+        let data = obj.map(v => {
+          v.text = v.name
+          return v
+        })
+        data.unshift({
+          text: '全部公司',
+          id: ''
+        })
+        return data
+      }
+    },
     created() {
-      this.titles = this.titleList
+      this._init_c_2()
+      this._getKeyword()
     },
     methods: {
+      _init_c_2() {
+        let data = this.$store.state.user.category_2.map(v => {
+          v.text = v.name
+          return v
+        })
+        data.unshift({
+          text: '全部类目',
+          id: ''
+        })
+        this.category_2 = data
+      },
+      _getKeyword() {
+        this.$api.GET_KEYWORD_LIST({
+          limit: 20,
+          page: 1,
+          name: this.value
+        }).then(res => {
+          if (res.code === 0) {
+            this.keywordList = res.page.list
+          }
+        })
+      },
+      showSearch() {
+        this.show3 = true
+      },
+      search() {
+        this.$api.GET_ARTICLE_LIST(this.params).then(res => {
+          if (res.code === 0) {
+            this.articleList = res.page.list
+          }
+        })
+      },
+      toDetail(i, event) {
+        this.$router.push({
+          name: 'Detail',
+          params: {
+            info: i
+          }
+        })
+      },
+      filter() {
+        this.show = true
+      },
+      filter2() {
+        this.show2 = true
+      },
+      getCategory_2() {
+        this.$api.GET_CATEGORY_TREE(this.params_category_2).then(res => {
+          if (res.code === 0) {
+            let data = res.page.list.map(v => {
+              v.text = v.categoryIdName
+              return v
+            })
+            data.unshift({
+              text: '全部类目',
+              id: ''
+            })
+            this.category_2 = data
+          }
+        })
+      },
+      onConfirm() {
+        this.show = false
+      },
+      onCancel() {
+        this.company = this.category_1[0]
+        this.show = false
+      },
+      onConfirm2() {
+        this.show2 = false
+      },
+      onCancel2() {
+        this.choice_category = this.category_2[0]
+        this.show2 = false
+      },
+      onChange(picker, values) {
+        this.company = picker.getValues()[0]
+      },
+      onChange2(picker, values) {
+        this.choice_category = picker.getValues()[0]
+      },
       onClickRight() {
         this.$router.go(-1)
       },
@@ -45,5 +232,13 @@
 </script>
 
 <style scoped lang="less">
-
+  .wrapper {
+    height: 100vh;
+    padding-top: 44px;
+    padding-bottom: 50px;
+    box-sizing: border-box
+  }
+  .right-item {
+    padding: 0 8px;
+  }
 </style>

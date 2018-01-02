@@ -1,22 +1,24 @@
 <template>
   <div ref="app" class="app page">
     <transition :name="transitionName">
+      <keep-alive>
       <router-view class="RouterView"></router-view>
+      </keep-alive>
     </transition>
     <!--<van-nav-bar title="标题" fixed leftText="返回" rightText="按钮" leftArrow @click-left="onClickLeft" @click-right="onClickRight" />-->
     <van-tabbar v-model="active" class="footer" ref="footer">
       <van-tabbar-item icon="shop" to="index">
-        <span>头条</span>
+        <span>首页</span>
         <div slot="icon" slot-scope="props">
           <i class="iconfont icon-toutiao"></i>
         </div>
       </van-tabbar-item>
-      <van-tabbar-item icon="chat"  to="love">
+      <!-- <van-tabbar-item icon="chat"  to="love">
         <span>专栏</span>
         <div slot="icon" slot-scope="props">
           <i class="iconfont icon-zhuanlan_jiemu"></i>
         </div>
-      </van-tabbar-item>
+      </van-tabbar-item> -->
       <van-tabbar-item icon="records"  to="find">
         <span>发现</span>
         <div slot="icon" slot-scope="props">
@@ -61,10 +63,10 @@
               this.active = 1
               break
             case '/find':
-              this.active = 2
+              this.active = 1
               break
             case '/user':
-              this.active = 3
+              this.active = 2
               break
           }
           Cookies.set('active', {

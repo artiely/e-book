@@ -71,12 +71,42 @@ const GET_CATEGORY_LIST = params => {
   })
 }
 
+/**
+ * 获取类别联级
+ * @param {String,Number} page
+ * @param {String,Number} limit
+ * @param {String,Number} parent_id
+ */
+const GET_CATEGORY_TREE = params => {
+  return fetch({
+    url: '/klcategorytree/list',
+    method: 'get',
+    params: params
+  })
+}
+
+/**
+ * 获取关键词
+ * @param {String,Number} page
+ * @param {String,Number} limit
+ * @param {String} name
+ */
+const GET_KEYWORD_LIST = params => {
+  return fetch({
+    url: '/klkeyword/list',
+    method: 'get',
+    params: params
+  })
+}
+
 const apiList = {
   LOGIN,
   REGISTER,
   GET_ARTICLE_LIST,
   GET_USER_INFO,
-  GET_CATEGORY_LIST
+  GET_CATEGORY_LIST,
+  GET_CATEGORY_TREE,
+  GET_KEYWORD_LIST
 }
 
 export default apiList

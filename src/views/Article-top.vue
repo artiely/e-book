@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div v-for="(i,k) in data" :key="k" class="article-top" @click="toDetail(i)">
+    <div v-for="(i,k) in list" :key="k" class="article-top" @click="toDetail(i)">
       <h3 class="tit">{{i.title}}</h3>
       <div class="clearfix"><span class="user-icon fl"></span> <span class="author fl">{{i.createByUserName}}</span></div>
-      <p class="des">{{i.content}}</p>
-      <p class="info"><span class="crumbs">系统 / 技术部 / 外设</span><span class="create-time">{{i.createDate}}</span></p>
+      <p class="des" >{{i._des}}</p>
+      <p class="info">
+        <!-- <span class="crumbs">系统 / 技术部 / 外设</span> -->
+        <span class="create-time">{{i.createDate}}</span></p>
     </div>
   </div>
 </template>
@@ -24,9 +26,22 @@
         default: 20
       }
     },
-    computed: {},
+    computed: {
+      list() {
+        function delHtmlTag(str) {
+          return str.replace(/<[^>]+>/g, '') // 去掉所有的html标记
+        }
+        return this.data.map(v => {
+          if (v.content) {
+            v._des = delHtmlTag(v.content)
+          }
+          return v
+        })
+      }
+    },
     watch: {},
-    created() {},
+    created() {
+    },
     methods: {
       toDetail(i, event) {
         console.log('11', i)

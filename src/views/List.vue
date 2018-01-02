@@ -13,19 +13,19 @@
     </van-nav-bar>
     <div>
       <div class="wrapper">
-        <cube-scroll>
+        <cube-scroll @pulling-down="onPullingDown" @pulling-up="onPullUp" :options="options" :data="articleList" ref="scroll">
           <van-row class="grid-tit">
             <swiper :options="swiperOption" class="swiper">
-              <swiper-slide :class="{'active':choice.id == ''}"  @click.native="getList({id:''})">
+              <swiper-slide :class="{'active':choice.id == ''}" @click.native="setChoice({id:''})">
                 <!-- <svg class="icon" aria-hidden="true">
-                        <use :xlink:href="'#'+v.icon"></use>
-                    </svg> -->
+                                <use :xlink:href="'#'+v.icon"></use>
+                            </svg> -->
                 <p class="textover1">全部</p>
               </swiper-slide>
-              <swiper-slide :class="{'active':v.id == choice.id}" v-for="(v,k) in category_3" :key="k" @click.native="getList(v)">
+              <swiper-slide :class="{'active':v.id == choice.id}" v-for="(v,k) in category_3" :key="k" @click.native="setChoice(v)">
                 <!-- <svg class="icon" aria-hidden="true">
-                        <use :xlink:href="'#'+v.icon"></use>
-                    </svg> -->
+                                <use :xlink:href="'#'+v.icon"></use>
+                            </svg> -->
                 <p class="textover1">{{v.name}}</p>
               </swiper-slide>
             </swiper>
@@ -49,13 +49,37 @@
           freeMode: true
         },
         articleList: [],
-        choice:{
-          id:''
+        choice: {
+          id: ''
+        },
+        stop: false,
+        options: {
+          probeType: 1,
+          pullDownRefresh: {
+            stop: 44,
+            threshold: 70,
+            txt: '刷新成功'
+          },
+          pullUpLoad: {
+            threshold: -50,
+            txt: {
+              more: '上拉加载更多...',
+              noMore: '———— 我就是底线 ————'
+            }
+          }
         }
       }
     },
     components: {
       ArticleTop
+    },
+    watch: {
+      choice: {
+        handler() {
+          this.params.page = 1
+          this.getData()
+        }
+      }
     },
     computed: {
       titleList() {
@@ -66,12 +90,33 @@
       },
       listParams() {
         return this.$store.state.user.listParams
+      },
+      params() {
+        return {
+          page: 1,
+          limit: 10,
+          category_id2: this.listParams.id,
+          category_id3: this.choice.id
+        }
       }
     },
-    created() {
-      
-    },
+    created() {},
     methods: {
+      setChoice(v) {
+        this.choice = v
+      },
+      onPullingDown() {
+        // console.log('下拉刷新了')
+        this.params.page = 1
+        this.getData(this.params)
+      },
+      onPullUp() {
+        // console.log('上拉加载了')
+        if (!this.stop) {
+          this.params.page++
+        }
+        this.getData(this.params)
+      },
       onClickLeft() {
         this.$router.back()
       },
@@ -79,19 +124,29 @@
         this.$router.push('/find')
       },
       onSearch() {},
-      toDetail() {
-        this.$router.push('/detail')
+      toDetail(i, event) {
+        this.$router.push({
+          name: 'Detail',
+          params: {
+            info: i
+          }
+        })
       },
-      getList(v) {
-        this.choice = v
-        this.$api.GET_ARTICLE_LIST({
-          page: 1,
-          limit: 10,
-          category_id2: this.listParams.id,
-          category_id3: v.id
-        }).then(res => {
+      getData() {
+        this.$api.GET_ARTICLE_LIST(this.params).then(res => {
           if (res.code === 0) {
-            this.articleList = res.page.list
+            if (this.params.page === 1) {
+              this.articleList = res.page.list
+            } else {
+              if (res.page.list.length === 0) {
+                // 如果没有新数据
+                this.stop = true
+                this.$refs.scroll.forceUpdate()
+              } else {
+                this.stop = false
+                this.articleList = this.articleList.concat(res.page.list)
+              }
+            }
           }
         })
       }
@@ -100,26 +155,19 @@
       this.$nextTick(() => {})
     },
     activated() {
-      this.$api.GET_ARTICLE_LIST({
-        page: 1,
-        limit: 10,
-        category_id2: this.listParams.id,
-        category_id3: this.choice.id
-      }).then(res => {
-        if (res.code === 0) {
-          this.articleList = res.page.list
-        }
-      })
+      this.params.page = 1
+      this.getData(this.params)
     }
   }
 </script>
 
 <style scoped lang="less">
-.active{
-  color: #2dabd1
-}
+  .active {
+    color: #2dabd1
+  }
   .wrapper {
     height: 100vh;
     padding-top: 44px;
+    box-sizing: border-box;
   }
 </style>

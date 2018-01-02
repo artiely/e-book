@@ -31,7 +31,7 @@ Router.prototype.back = function() {
 store.dispatch('getUserInfo')
 let __listParams = Cookies.getJSON('__listParams')
 store.dispatch('setListParams', __listParams)
-console.log('123', store)
+// console.log('123', store)
 const router = new Router({
   scrollBehavior(to, from, savedPosition) {
     return {
