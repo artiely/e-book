@@ -8,16 +8,16 @@
       </div>
       <div slot="right">
         <span @click="filter">
-                                          <i class="iconfont  icon-weibiaoti35"></i>
-                                        <span>{{company.text}}</span>
+          <i class="iconfont  icon-weibiaoti35"></i>
+        <span>{{company.text}}</span>
         </span>
         <span @click="filter2">
-                                          <i class="iconfont  icon-weibiaoti35"></i>
-                                        <span>{{choice_category.text}}</span>
+      <i class="iconfont  icon-weibiaoti35"></i>
+    <span>{{choice_category.text}}</span>
         </span>
         <span class="right-item" @click="showSearch">
-                    <i class="iconfont icon-sousuo"></i>
-                  </span>
+        <i class="iconfont icon-sousuo"></i>
+      </span>
       </div>
     </van-nav-bar>
     <div class="wrapper">
@@ -32,21 +32,21 @@
       <van-picker :visibile-column-count="8" :columns="category_2" @change="onChange2" show-toolbar title="选择公司" @cancel="onCancel2" @confirm="onConfirm2" />
     </van-popup>
     <van-popup v-model="show3" style="height:100%;width:80%" position="right">
-      <van-search style="position:absolute;top:0px;left:0;right:0" v-model="value" placeholder="请输入关键词" :showAction="true" @search="onSearch">
+      <van-search style="position:absolute;top:0px;left:0;right:0" v-model="value" placeholder="请输入关键词" >
+         <!-- <div slot="action" @click="onClose">关闭</div> -->
       </van-search>
       <div class="wrapper">
-<cube-scroll>
+        <cube-scroll>
+          <p style="font-size:12px;padding-left:8px;color:#777">选择关键词进行搜索</p>
           <van-checkbox-group v-model="keywordsResult">
-        <van-cell-group>
-          <van-cell v-for="(v, index) in keywordList" :key="index" >
-            <van-checkbox shape="square" :name="v.id">{{ v.name }}</van-checkbox>
-          </van-cell>
-        </van-cell-group>
-      </van-checkbox-group>
+            <van-cell-group>
+              <van-cell v-for="(v, index) in keywordList" :key="index">
+                <van-checkbox shape="square" :name="v.id">{{ v.name }}</van-checkbox>
+              </van-cell>
+            </van-cell-group>
+          </van-checkbox-group>
         </cube-scroll>
       </div>
-      
-      
     </van-popup>
   </div>
 </template>
@@ -62,13 +62,13 @@
         show3: false,
         keywordsResult: [],
         company: {
-          text: '全部公司',
+          text: '选择公司',
           id: ''
         },
         articleList: [],
         category_2: [],
         choice_category: {
-          text: '全部类目',
+          text: '选择类目',
           id: ''
         },
         keywordList: []
@@ -105,7 +105,7 @@
           limit: 20,
           category_id1: this.company.id,
           category_id2: this.choice_category.id,
-          keywordIds: this.keywordsResult.join(',')
+          keywordIds: this.keywordsResult
         }
       },
       params_category_2() {
@@ -133,13 +133,16 @@
       this._getKeyword()
     },
     methods: {
+      onClose() {
+        this.show3 = false
+      },
       _init_c_2() {
         let data = this.$store.state.user.category_2.map(v => {
           v.text = v.name
           return v
         })
         data.unshift({
-          text: '全部类目',
+          text: '选择类目',
           id: ''
         })
         this.category_2 = data
@@ -236,7 +239,7 @@
     height: 100vh;
     padding-top: 44px;
     padding-bottom: 50px;
-    box-sizing: border-box
+    box-sizing: border-box;
   }
   .right-item {
     padding: 0 8px;

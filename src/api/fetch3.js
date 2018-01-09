@@ -6,7 +6,7 @@ export default function fetch(options) {
     const instance = axios.create({
       baseURL: '/PT',
       headers: {},
-      transformResponse: [(data) => {
+      transformResponse: [ (data) => {
         data = JSON.parse(data)
         if (typeof data !== 'object') {
           return {
@@ -41,9 +41,7 @@ export default function fetch(options) {
       .then((res) => {
         if (res.code === 1000) {
           Cookies.remove('__userInfo')
-          router.replace({
-            name: 'login'
-          })
+          router.replace({name: 'login'})
         } else {
           if (res.status === 200) {
             resolve(res.data)
