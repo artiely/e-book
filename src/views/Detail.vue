@@ -36,9 +36,9 @@
       </van-nav-bar>
       <div style="padding-top:50px">
         <label class="font-item" :class="checkFontSize.value==v.value?'active':''" v-for="(v,k) in fontSize" :key="k">
-                      <input type="radio" v-model="defaultFontSize" :value="v" name="font"/>{{v.label}}
-                      <i class="iconfont icon-mini-dui" v-show="checkFontSize.value==v.value"></i>
-                    </label>
+          <input type="radio" v-model="defaultFontSize" :value="v" name="font"/>{{v.label}}
+          <i class="iconfont icon-mini-dui" v-show="checkFontSize.value==v.value"></i>
+        </label>
       </div>
     </van-popup>
   </div>
