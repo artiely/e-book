@@ -1,0 +1,139 @@
+@import '../style/var.less';
+.mix-hover(@arg-color){
+  &:hover{
+    background:lighten(@arg-color,10%)
+  }
+  &:active{
+    background:darken(@arg-color,10%)
+  }
+}
+.i__button{
+  background: @primary;
+  text-align: center;
+  color:contrast(@primary,@color-white);
+  font-size: 14px;
+  padding: 0 12px;
+  height: 40px;
+  line-height: 40px;
+  border-radius:@border-radius;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+ .mix-hover(@primary);
+ 
+}
+.i__button--base{
+  background: @base;
+  .is-shadow(@base);
+  .mix-hover(@base);
+  .i__ripple(@base);
+}
+.i__button--primary{
+  background: @primary;
+  .is-shadow(@primary);
+  .mix-hover(@primary);
+  .i__ripple(@primary);
+}
+.i__button--warning{
+  background: @warning;
+  .is-shadow(@warning);
+  .mix-hover(@warning);
+  .i__ripple(@warning);
+}
+.i__button--danger{
+  background: @danger;
+  .is-shadow(@danger);
+  .mix-hover(@danger);
+  .i__ripple(@danger);
+}
+.i__button--ghost{
+  background: @ghost;
+  color: contrast(@ghost,@color-dark);
+  .mix-hover(@ghost)
+}
+
+.i__button--block{
+  display: block;
+  width: 100%;
+}
+.is-plain{
+  border-radius: 0;
+  &:before{
+    border-radius: 0;
+  }
+  &.i__ripple{
+    border-radius: 0;
+    &::after{
+      border-radius: 0;
+    }
+  }
+}
+.is-circle{
+  border-radius: 22px;
+  &:before{
+    border-radius: 38px;
+  }
+  &::after{
+    border-radius: 22px;
+  }
+}
+.is-shadow(@arg-color){
+  box-shadow:0 2px 6px 0 fade(@arg-color,40%)
+}
+.no-shadow{
+  box-shadow: none
+}
+// 点击反馈效果
+.i__ripple (@arg-color){
+  position: relative;
+  &:focus{
+    outline: none;
+  }
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: @border-radius;
+    pointer-events: none;
+    background-color: @arg-color;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    opacity: 0;
+    transition: all .3s;
+  }
+  &:active:after {
+    opacity: .3;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: 0s;
+  }
+}
+.is-disabled{
+  background: #eee;
+  cursor: no-drop;
+  color: contrast(@ghost,@color-dark);
+  box-shadow: none;
+  &:hover{
+    background: #eee;
+  }
+  &:active{
+    background: #eee;
+  }
+  &:after{
+    background: none;
+  }
+  &:before{
+    background: none;
+  }
+}
