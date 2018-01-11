@@ -3,20 +3,27 @@ import Router from 'vue-router'
 import store from '../vuex'
 import Cookies from 'js-cookie'
 // import HelloWorld from '@/components/HelloWorld'
-import Index from '@/views/Index'
+// import Index from '@/views/Index'
+
 import Home from '@/views/Home'
 import Login from '@/components/Login'
-import Sort from '@/views/Sort'
-import Detail from '@/views/Detail'
-import Love from '@/views/Love'
-import Find from '@/views/Find'
-import User from '@/views/User'
+// import Sort from '@/views/Sort'
+// import Detail from '@/views/Detail'
+// import Love from '@/views/Love'
+// import Find from '@/views/Find'
+// import User from '@/views/User'
 import Register from '@/views/Register'
-import List from '@/views/List'
-import Company from '@/views/Company'
+// import List from '@/views/List'
+// import Company from '@/views/Company'
 
-import Button from '@/example/Button'
-import Input from '@/example/Input'
+const Index = () => import('@/views/Index')
+const Detail = () => import('@/views/Detail')
+const Love = () => import('@/views/Love')
+const Find = () => import('@/views/Find')
+const User = () => import('@/views/User')
+const List = () => import('@/views/List')
+const Company = () => import('@/views/Company')
+const Sort = () => import('@/views/Sort')
 
 Vue.use(Router)
 Router.prototype.goBack = function() {
@@ -74,16 +81,6 @@ const router = new Router({
       name: 'Detail',
       component: Detail,
       meta: {requiresAuth: true}
-    },
-    {
-      path: '/button',
-      name: 'Button',
-      component: Button
-    },
-    {
-      path: '/input',
-      name: 'Input',
-      component: Input
     },
     {
       path: '/register',

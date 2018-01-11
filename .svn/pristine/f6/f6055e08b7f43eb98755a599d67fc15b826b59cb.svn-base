@@ -1,6 +1,6 @@
 <template>
   <div class="index page">
-    <van-nav-bar ref="header" class="header shadow" fixed @click-left="onClickLeft">
+    <van-nav-bar ref="header" class="header" fixed @click-left="onClickLeft">
       <div slot="left" class="header-left">
         <i class="iconfont icon-fanhui"></i>
       </div>

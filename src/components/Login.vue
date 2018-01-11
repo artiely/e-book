@@ -13,65 +13,67 @@
 </template>
 
 <script>
-  import TButton from '@/components/button/Button.vue'
-  export default {
-    name: 'login',
-    components: {
-      TButton
-    },
-    data() {
-      return {
-        username: '',
-        password: '',
-        error: false,
-        errorMsg: ''
+import TButton from '@/components/button/Button.vue'
+import Cookies from 'js-cookie'
+export default {
+  name: 'login',
+  components: {
+    TButton
+  },
+  data() {
+    return {
+      username: '',
+      password: '',
+      error: false,
+      errorMsg: ''
+    }
+  },
+  methods: {
+    login() {
+      if (this.username === '' || this.password === '') {
+        this.error = true
+        this.errorMsg = '用户名和密码不能为空'
+        return
       }
-    },
-    methods: {
-      login() {
-        if (this.username === '' || this.password === '') {
+      let data = `username=${this.username}&password=${this.password}&captcha=&loginNum=1`
+      this.$api.LOGIN(data).then(res => {
+        if (res.code === 0) {
+          this.$toast({
+            message: '登录成功',
+            position: 'top'
+          })
+          this.$api.GET_USER_INFO().then(res2 => {
+            this.$store.dispatch('getUserInfo', res2.user)
+            Cookies.set('__userInfo', res2.user)
+            this.$router.replace('/index')
+          })
+        } else {
           this.error = true
-          this.errorMsg = '用户名和密码不能为空'
-          return
+          this.errorMsg = res.msg
         }
-        let data = `username=${this.username}&password=${this.password}&captcha=&loginNum=1`
-        this.$api.LOGIN(data).then(res => {
-          if (res.code === 0) {
-            this.$toast({
-              message: '登录成功',
-              position: 'top'
-            })
-            this.$api.GET_USER_INFO().then(res2 => {
-              this.$store.dispatch('getUserInfo', res2.user)
-              this.$router.replace('/index')
-            })
-          } else {
-            this.error = true
-            this.errorMsg = res.msg
-          }
-        })
-      }
-    },
-    created() {}
-  }
+      })
+    }
+  },
+  created() { }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-  .login-box {
-    margin: 0 auto
-  }
-  .logo {
-    margin: 80px auto 20px
-  }
-  .error-tip {
-    margin: 0;
-    padding: 6px;
+.login-box {
+  margin: 0 auto;
+}
+.logo {
+  margin: 80px auto 20px;
+}
+.error-tip {
+  margin: 0;
+  padding: 6px;
+  font-size: 12px;
+  color: #f00;
+  .iconfont {
+    margin-right: 4px;
     font-size: 12px;
-    color: #f00;
-    .iconfont {
-      margin-right: 4px;
-      font-size: 12px;
-    }
   }
+}
 </style>

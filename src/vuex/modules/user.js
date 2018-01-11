@@ -30,9 +30,6 @@ const mutations = {
     state.userInfo = { ...state.userInfo,
       ...payload
     }
-    Cookies.set('__userInfo', { ...state.userInfo,
-      ...payload
-    })
   },
   [types.SORT_TITLE_LIST](state, payload) {
     state.titleList = payload
@@ -83,23 +80,37 @@ const actions = {
   getCategoryList({
     commit
   }) {
-    api.GET_CATEGORY_LIST({page: 1, limit: 200, level: 1}).then(res => {
+    api.GET_CATEGORY_LIST({
+      page: 1,
+      limit: 200,
+      level: 1
+    }).then(res => {
       if (res.code === 0) {
         commit(types.GET_CATEGORY_LIST_1, res.page.list) // 获取公司
       }
     })
-    api.GET_CATEGORY_LIST({page: 1, limit: 200, level: 2}).then(res => {
+    api.GET_CATEGORY_LIST({
+      page: 1,
+      limit: 200,
+      level: 2
+    }).then(res => {
       if (res.code === 0) {
         commit(types.GET_CATEGORY_LIST_2, res.page.list) // 获取公司
       }
     })
-    api.GET_CATEGORY_LIST({page: 1, limit: 200, level: 3}).then(res => {
+    api.GET_CATEGORY_LIST({
+      page: 1,
+      limit: 200,
+      level: 3
+    }).then(res => {
       if (res.code === 0) {
         commit(types.GET_CATEGORY_LIST_3, res.page.list) // 获取公司
       }
     })
   },
-  setListParams({commit}, payload) {
+  setListParams({
+    commit
+  }, payload) {
     commit(types.SET_LIST_PARAMS, payload)
   }
 }

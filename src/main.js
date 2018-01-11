@@ -7,8 +7,8 @@ import store from './vuex'
 import Api from './api'
 import Vant from 'vant'
 import 'vant/lib/vant-css/index.css'
-import './package/style/index.less'
-import Ivue from './package'
+// import './package/style/index.less'
+// import Ivue from './package'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 // require styles
 import 'swiper/dist/css/swiper.css'
@@ -17,7 +17,7 @@ import Cube from 'cube-ui'
 // import VConsole from 'vconsole'
 // Vue.use(VueScroller)
 Vue.use(VueAwesomeSwiper /* { default global options } */)
-Vue.use(Ivue)
+// Vue.use(Ivue)
 Vue.use(Cube)
 // var vConsole = new VConsole()
 // console.log(vConsole)
