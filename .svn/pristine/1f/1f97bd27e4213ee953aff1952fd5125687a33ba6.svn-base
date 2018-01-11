@@ -1,6 +1,6 @@
 <template>
   <div class="index page">
-    <van-nav-bar ref="header" class="header shadow" fixed @click-left="onClickLeft">
+    <van-nav-bar ref="header" class="header" fixed @click-left="onClickLeft">
       <div slot="left" class="header-left">
         <i class="iconfont icon-fanhui"></i>
       </div>
@@ -22,7 +22,6 @@
     </van-nav-bar>
     <div class="wrapper">
       <cube-scroll :data="articleList">
-        <p v-if="articleList.length==0" style="text-align:center;color:#888;padding:9px;font-size:14px;">选择公司、类目或关键词搜索文章</p>
         <article-top :data="articleList" @to-detail="toDetail"></article-top>
       </cube-scroll>
     </div>
