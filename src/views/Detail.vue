@@ -16,12 +16,17 @@
         <div class="wrapper">
           <!-- <cube-scroll> -->
           <div class="detail" :class="fontClass">
-            <h3 class="detail-title">{{info.title}}</h3>
-            <div class="info clearfix">
-              <div class="author">{{info.createByUserName}}</div>
-              <div class="time">{{info.createDate}}</div>
+            <!-- <iframe v-show="isIframe" src="src/views/detail.html" width='100%' height='100%' frameborder="0" class="iframe"
+             id="iframepage" iframeborder="0" scrolling="yes" marginheight="0" marginwidth="0" 
+            ></iframe> -->
+            <div v-show="!isIframe" style="padding:18px;">
+              <h3 class="detail-title">{{info.title}}</h3>
+              <div class="info clearfix">
+                <div class="author">{{info.createByUserName}}</div>
+                <div class="time">{{info.createDate}}</div>
+              </div>
+              <div v-html="info.content"></div>
             </div>
-            <div v-html="info.content"></div>
           </div>
           <!-- </cube-scroll> -->
         </div>
@@ -36,170 +41,183 @@
       </van-nav-bar>
       <div style="padding-top:50px">
         <label class="font-item" :class="checkFontSize.value==v.value?'active':''" v-for="(v,k) in fontSize" :key="k">
-          <input type="radio" v-model="defaultFontSize" :value="v" name="font"/>{{v.label}}
-          <i class="iconfont icon-mini-dui" v-show="checkFontSize.value==v.value"></i>
-        </label>
+            <input type="radio" v-model="defaultFontSize" :value="v" name="font"/>{{v.label}}
+            <i class="iconfont icon-mini-dui" v-show="checkFontSize.value==v.value"></i>
+          </label>
+          <!-- <div @click="changeShow">切换预览方式</div> -->
       </div>
     </van-popup>
   </div>
 </template>
 
 <script>
-  import $ from 'n-zepto'
-  export default {
-    name: 'app',
-    data() {
-      return {
-        show: false,
-        info: {},
-        defaultFontSize: {
-          value: 14,
-          label: '默认字体'
-        },
-        showTitle: false,
-        fontClass: 'f14',
-        fontSize: [
-          {
-            value: 12,
-            label: '小号字体'
-          },
-          {
-            value: 14,
-            label: '默认字体'
-          },
-          {
-            value: 16,
-            label: '中号字体'
-          },
-          {
-            value: 18,
-            label: '大号字体'
-          }
-        ]
-      }
-    },
-    computed: {
-      checkFontSize() {
-        return this.$store.state.user.checkFontSize
-      }
-    },
-    watch: {
+import $ from 'n-zepto'
+export default {
+  name: 'app',
+  data() {
+    return {
+      show: false,
+      info: {},
+      isIframe: false,
       defaultFontSize: {
-        handler(val) {
-          if (val.value === 12) {
-            this.fontClass = 'f12'
-          } else if (val.value === 14) {
-            this.fontClass = 'f14'
-          } else if (val.value === 16) {
-            this.fontClass = 'f16'
-          } else {
-            this.fontClass = 'f18'
-          }
-          this.$store.dispatch('setFontSize', val)
-        }
-      }
-    },
-    created() {
-      this.defaultFontSize = this.checkFontSize
-    },
-    methods: {
-      onClickRight() {
-        this.show = true
+        value: 14,
+        label: '默认字体'
       },
-      onClickLeft() {
-        this.$router.back()
+      showTitle: false,
+      fontClass: 'f14',
+      fontSize: [{
+        value: 12,
+        label: '小号字体'
       },
-      falseToShow() {
-        this.show = false
+      {
+        value: 14,
+        label: '默认字体'
+      },
+      {
+        value: 16,
+        label: '中号字体'
+      },
+      {
+        value: 18,
+        label: '大号字体'
       }
-    },
-    mounted() {
-      this.$nextTick(() => {
-        let offsetTop = $('.detail-title').offset().top
-        $('.wrapper').on('scroll', () => {
-          let scrollTop = $('.wrapper')[0].scrollTop
-          setTimeout(() => {
-            if (scrollTop > offsetTop) {
-              this.showTitle = true
-            } else {
-              this.showTitle = false
-            }
-          }, 1000 / 60)
-        })
-      })
-    },
-    activated() {
-      this.info = this.$route.params.info
-      this.$nextTick(function() {
-        $('.__lock__').html('<span class="__has-clock__">加密文本内容</span>')
-      })
+      ]
     }
+  },
+  computed: {
+    checkFontSize() {
+      return this.$store.state.user.checkFontSize
+    }
+  },
+  watch: {
+    defaultFontSize: {
+      handler(val) {
+        if (val.value === 12) {
+          this.fontClass = 'f12'
+        } else if (val.value === 14) {
+          this.fontClass = 'f14'
+        } else if (val.value === 16) {
+          this.fontClass = 'f16'
+        } else {
+          this.fontClass = 'f18'
+        }
+        this.$store.dispatch('setFontSize', val)
+      }
+    }
+  },
+  created() {
+    this.defaultFontSize = this.checkFontSize
+  },
+  methods: {
+    onClickRight() {
+      this.show = true
+    },
+    onClickLeft() {
+      this.$router.back()
+    },
+    falseToShow() {
+      this.show = false
+    },
+    changeShow() {
+      this.isIframe = !this.isIframe
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      let offsetTop = $('.detail-title').offset().top
+      $('.wrapper').on('scroll', () => {
+        let scrollTop = $('.wrapper')[0].scrollTop
+        setTimeout(() => {
+          if (scrollTop > offsetTop) {
+            this.showTitle = true
+          } else {
+            this.showTitle = false
+          }
+        }, 1000 / 60)
+      })
+    })
+  },
+  activated() {
+    this.info = this.$route.params.info
+    this.$nextTick(function() {
+      $('.__lock__').html('<span class="__has-clock__">加密文本内容</span>')
+    })
   }
+}
 </script>
 
 <style scoped lang="less">
-  @import '../assets/mixin.less';
-  .wrapper {
-    height: 100vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
+@import "../assets/mixin.less";
+// @import "../../node_modules/normalize.css/normalize.css";
+.iframe {
+  height: 100vh;
+  width: 100%;
+  overflow-y: scroll;
+}
+.wrapper {
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: auto;
+  // padding: 6px;
+  background: #fff;
+  box-sizing: border-box;
+}
+.detail {
+  padding-top: 50px;
+  // padding: 50px 10px 20px 10px;
+  .detail-title {
+    padding: 20px 0 4px 0;
   }
-   
-  .detail {
-    padding: 50px 10px 20px 10px;
-    .detail-title {
-      padding: 20px 0 4px 0;
-    }
-    .info {
-      color: #999;
-      padding: 6px 0 2px 0;
-      .time {
-        font-size: 10px;
-      }
-    }
-  }
-  .title-over {
-    margin-left: 40px;
-    margin-right: 40px;
-    text-align: center;
-    opacity: 0;
-    font-size: 14px;
-  }
-  .fade {
-    opacity: 1;
-    transition: all .6s;
-  }
-  .icon-X {
-    opacity: 0.7;
-  }
-  .font-item {
-    display: block;
-    text-align: left;
-    padding: 8px;
-    color: #777;
-    &.active {
-      color: #f00
-    }
-    .b_b();
-    .iconfont {
-      float: right;
-      margin-top: 4px;
-      margin-right: 4px;
-    }
-    input {
-      visibility: hidden;
+  .info {
+    color: #999;
+    padding: 6px 0 2px 0;
+    .time {
+      font-size: 10px;
     }
   }
-  .f12 {
-    font-size: 12px !important
+}
+.title-over {
+  margin-left: 40px;
+  margin-right: 40px;
+  text-align: center;
+  opacity: 0;
+  font-size: 14px;
+}
+.fade {
+  opacity: 1;
+  transition: all 0.6s;
+}
+.icon-X {
+  opacity: 0.7;
+}
+.font-item {
+  display: block;
+  text-align: left;
+  padding: 8px;
+  color: #777;
+  &.active {
+    color: #f00;
   }
-  .f14 {
-    font-size: 14px !important
+  .b_b();
+  .iconfont {
+    float: right;
+    margin-top: 4px;
+    margin-right: 4px;
   }
-  .f16 {
-    font-size: 16px !important
+  input {
+    visibility: hidden;
   }
-  .f18 {
-    font-size: 18px !important
-  }
+}
+.f12 {
+  font-size: 12px !important;
+}
+.f14 {
+  font-size: 14px !important;
+}
+.f16 {
+  font-size: 16px !important;
+}
+.f18 {
+  font-size: 18px !important;
+}
 </style>

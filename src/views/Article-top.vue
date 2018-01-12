@@ -35,6 +35,9 @@ export default {
         var newstr = delHtmlTag(v.content)
         newstr = newstr.replace(/&nbsp;/g, '')
         v._des = newstr === '' ? '查看图片详情' : newstr
+        var str = v.content
+        str = str.replace(/\s+width="[^"]*"/ig, '')
+        v.content = str.replace(/\s+height="[^"]*"/ig, '')
         return v
       })
     }
@@ -44,6 +47,8 @@ export default {
   },
   methods: {
     toDetail(i, event) {
+      var s = JSON.stringify(i)
+      localStorage.setItem('_article', s)
       this.$emit('to-detail', i, event)
     }
   },
