@@ -7,7 +7,7 @@ export default function fetch(options) {
       baseURL: '/PT',
       headers: {},
       transformResponse: [(data) => {
-        data = JSON.parse(data)
+        data = JSON.parse(data.toString())
         if (typeof data !== 'object') {
           return {
             code: 1000,
