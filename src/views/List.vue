@@ -30,6 +30,7 @@
               </swiper-slide>
             </swiper>
           </van-row>
+          <p class="no-data" v-show="articleList.length==0">暂无数据...</p>
           <article-top :data="articleList" @to-detail="toDetail"></article-top>
         </cube-scroll>
       </div>

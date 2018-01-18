@@ -19,6 +19,7 @@
     "babel-polyfill": "^6.26.0",
     "better-scroll": "^1.6.3",
     "cube-ui": "^1.2.1",
+    "is-json": "^2.0.1",
     "js-cookie": "^2.2.0",
     "n-zepto": "^1.2.0",
     "normalize.css": "^7.0.0",

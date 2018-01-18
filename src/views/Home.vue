@@ -1,6 +1,6 @@
 <template>
   <div ref="app" class="app page">
-    <transition :name="transitionName">
+    <transition :name="transitionName" >
       <keep-alive>
       <router-view class="RouterView"></router-view>
       </keep-alive>
@@ -49,6 +49,7 @@
       $route: {
         handler(val) {
           let urlmark = val.path
+          console.log('当前的path', urlmark)
           switch (urlmark) {
             case '/home':
               this.active = 0
@@ -59,19 +60,16 @@
             case '/index':
               this.active = 0
               break
-            case '/love':
+            case '/msg':
               this.active = 1
               break
-            case '/find':
-              this.active = 1
-              break
-            case '/user':
+            case '/order':
               this.active = 2
               break
+            case '/user':
+              this.active = 3
+              break
           }
-          Cookies.set('active', {
-            active: this.active
-          })
         }
       },
       'active': {
