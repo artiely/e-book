@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="light page">
-    <transition :name="transitionName">
+    <transition :name="transitionName" >
       <keep-alive>
         <router-view class="RouterView"></router-view>
       </keep-alive>
@@ -47,6 +47,12 @@ export default {
   margin: 0;
   padding: 0;
 }
+.no-data{
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: #777
+}
 .pdd {
   padding: 14px 0;
 }
@@ -54,7 +60,7 @@ export default {
   padding: 14px 0;
 }
 .RouterView {
-  position: absolute; // width: 100%;
+  position: relative; // width: 100%;
   height: 100%;
   transition: all 0.28s ease-in;
   top: 0; // height: 100vh;
@@ -63,7 +69,7 @@ export default {
   right: 0; // // overflow: scroll;
   background: #fff;
   overflow: hidden; // 解决了ios下头脚拉动错误
-  transform: translateZ(0px);
+  // transform: translateZ(0px);
 }
 .cube-scroll-wrapper {
   background: none;
