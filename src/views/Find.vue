@@ -11,7 +11,7 @@
           <i class="iconfont  icon-weibiaoti35"></i>
         <span>{{company.text}}</span>
         </span>
-        <span @click="filter2">
+        <span @click="filter2" v-show="company.id">
       <i class="iconfont  icon-weibiaoti35"></i>
     <span>{{choice_category.text}}</span>
         </span>
@@ -27,10 +27,10 @@
       </cube-scroll>
     </div>
     <van-popup v-model="show" style="height:80%;width:100%" position="bottom">
-      <van-picker :visibile-column-count="8" :columns="category_1" @change="onChange" show-toolbar title="选择公司" @cancel="onCancel" @confirm="onConfirm" />
+      <van-picker :visibile-column-count="8" :columns="comapnyList" @change="onChange" show-toolbar title="选择公司" @cancel="onCancel" @confirm="onConfirm" />
     </van-popup>
     <van-popup v-model="show2" style="height:80%;width:100%" position="bottom">
-      <van-picker :visibile-column-count="8" :columns="category_2" @change="onChange2" show-toolbar title="选择类目" @cancel="onCancel2" @confirm="onConfirm2" />
+      <van-picker :visibile-column-count="8" :columns="category_1" @change="onChange2" show-toolbar title="选择类目" @cancel="onCancel2" @confirm="onConfirm2" />
     </van-popup>
     <van-popup v-model="show3" style="height:100%;width:80%" position="right">
       <van-search style="position:absolute;top:0px;left:0;right:0" v-model="value" placeholder="请输入关键词" >
@@ -75,7 +75,8 @@ export default {
         id: '',
         categoryId: ''
       },
-      keywordList: []
+      keywordList: [],
+      comapnyList: []
     }
   },
   components: {
@@ -84,11 +85,7 @@ export default {
   watch: {
     'company.id': {
       handler(val) {
-        if (val === '') {
-          this._init_c_2()
-          return
-        }
-        this.getCategory_2()
+        this.getCategory_1()
       }
     },
     'params': {
@@ -107,8 +104,9 @@ export default {
       return {
         page: 1,
         limit: 20,
-        category_id1: this.company.categoryId,
-        category_id2: this.choice_category.categoryId,
+        companyId: this.company.id,
+        categoryId1: this.company.categoryId,
+        categoryId2: this.choice_category.categoryId,
         keywordIds: this.keywordsResult
       }
     },
@@ -116,18 +114,33 @@ export default {
       return {
         page: 0,
         limit: 1000,
-        parent_id: this.company.id
+        parentId: this.company.id
       }
     }
   },
   created() {
     this._init_c_2()
     this._getKeyword()
-    this.getCategory_1()
+    this.getCompany()
   },
   methods: {
     onClose() {
       this.show3 = false
+    },
+    getCompany() {
+      this.$api.GET_COMPANY_LIST({ page: 1, limit: 100 }).then(res => {
+        if (res.code === 0) {
+          let data = res.page.list.map(v => {
+            v.text = v.companyname
+            return v
+          })
+          data.unshift({
+            text: '全部公司',
+            id: ''
+          })
+          this.comapnyList = data
+        }
+      })
     },
     _init_c_2() {
       let data = this.$store.state.user.category_2.map(v => {
@@ -176,14 +189,14 @@ export default {
       this.show2 = true
     },
     getCategory_1() {
-      this.$api.GET_CATEGORY_TREE({ page: 0, limit: 1000, parent_id: 0 }).then(res => {
+      this.$api.GET_CATEGORY_TREE({ page: 0, limit: 1000, parentId: 0, companyId: this.company.id }).then(res => {
         if (res.code === 0) {
           let data = res.page.list.map(v => {
             v.text = v.categoryIdName
             return v
           })
           data.unshift({
-            text: '全部公司',
+            text: '全部类目',
             id: ''
           })
           this.category_1 = data

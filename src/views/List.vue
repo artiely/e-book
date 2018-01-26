@@ -95,8 +95,8 @@
         return {
           page: 1,
           limit: 10,
-          category_id2: this.listParams.id,
-          category_id3: this.choice.id
+          categoryId2: this.listParams.id,
+          categoryId3: this.choice.id
         }
       }
     },

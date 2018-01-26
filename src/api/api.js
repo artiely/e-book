@@ -99,6 +99,19 @@ const GET_KEYWORD_LIST = params => {
   })
 }
 
+/**
+ * 获取公司列表
+ * @param {String} page
+ * @param {String} limit
+ */
+const GET_COMPANY_LIST = params => {
+  return fetch({
+    url: '/company/list',
+    method: 'get',
+    params: params
+  })
+}
+
 const apiList = {
   LOGIN,
   REGISTER,
@@ -106,7 +119,8 @@ const apiList = {
   GET_USER_INFO,
   GET_CATEGORY_LIST,
   GET_CATEGORY_TREE,
-  GET_KEYWORD_LIST
+  GET_KEYWORD_LIST,
+  GET_COMPANY_LIST
 }
 
 export default apiList

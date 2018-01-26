@@ -35,8 +35,15 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      'cube-ui': 'cube-ui/lib'
+      'cube-ui': 'cube-ui/src/modules/scroll'
     }
+  },
+  externals: {
+    'vue': 'Vue',
+    'vue-router': 'VueRouter',
+    'vuex': 'Vuex',
+    'vant': 'vant',
+    'axios': 'axios'
   },
   module: {
     rules: [
