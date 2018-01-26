@@ -1,5 +1,5 @@
 
-const proxyKey = ['/*/klarticle/**/*', '/*/sys/**/*', '/*/klcategory/**/*', '/*/klcategorytree/**/*', '/*/klkeyword/**/*']
+const proxyKey = ['/*/klarticle/**/*', '/*/sys/**/*', '/*/klcategory/**/*', '/*/klcategorytree/**/*', '/*/klkeyword/**/*', '/*/company/**/*']
 var proxyList = {}
 proxyKey.map(v => {
   proxyList[v] = {

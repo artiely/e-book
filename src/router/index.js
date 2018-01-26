@@ -2,19 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../vuex'
 import Cookies from 'js-cookie'
-// import HelloWorld from '@/components/HelloWorld'
-// import Index from '@/views/Index'
 
 import Home from '@/views/Home'
 import Login from '@/components/Login'
-// import Sort from '@/views/Sort'
-// import Detail from '@/views/Detail'
-// import Love from '@/views/Love'
-// import Find from '@/views/Find'
-// import User from '@/views/User'
-import Register from '@/views/Register'
-// import List from '@/views/List'
-// import Company from '@/views/Company'
 
 const Index = () => import('@/views/Index')
 const Detail = () => import('@/views/Detail')
@@ -22,8 +12,6 @@ const Love = () => import('@/views/Love')
 const Find = () => import('@/views/Find')
 const User = () => import('@/views/User')
 const List = () => import('@/views/List')
-const Company = () => import('@/views/Company')
-const Sort = () => import('@/views/Sort')
 
 Vue.use(Router)
 Router.prototype.goBack = function() {
@@ -38,7 +26,6 @@ Router.prototype.back = function() {
 store.dispatch('getUserInfo')
 let __listParams = Cookies.getJSON('__listParams')
 store.dispatch('setListParams', __listParams)
-// console.log('123', store)
 const router = new Router({
   scrollBehavior(to, from, savedPosition) {
     return {
@@ -65,27 +52,10 @@ const router = new Router({
       meta: {requiresAuth: true}
     },
     {
-      path: '/company',
-      name: 'Company',
-      component: Company,
-      meta: {requiresAuth: true}
-    },
-    {
-      path: '/sort',
-      name: 'Sort',
-      component: Sort,
-      meta: {requiresAuth: true}
-    },
-    {
       path: '/detail',
       name: 'Detail',
       component: Detail,
       meta: {requiresAuth: true}
-    },
-    {
-      path: '/register',
-      name: 'Register',
-      component: Register
     },
     {
       path: '/home',

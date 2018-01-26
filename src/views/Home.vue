@@ -49,7 +49,6 @@
       $route: {
         handler(val) {
           let urlmark = val.path
-          console.log('当前的path', urlmark)
           switch (urlmark) {
             case '/home':
               this.active = 0

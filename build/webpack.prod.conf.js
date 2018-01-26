@@ -49,7 +49,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       // set the following option to `true` if you want to extract CSS from
       // codesplit chunks into this main css file as well.
       // This will result in *all* of your app's CSS being loaded upfront.
-      allChunks: false,
+      allChunks: false
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
@@ -70,7 +70,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       minify: {
         removeComments: true,
         collapseWhitespace: true,
-        removeAttributeQuotes: true
+        removeAttributeQuotes: true,
+        minifyCSS: true,
+        minifyJS: true
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
@@ -84,7 +86,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks (module) {
+      minChunks(module) {
         // any required modules inside node_modules are extracted to vendor
         return (
           module.resource &&

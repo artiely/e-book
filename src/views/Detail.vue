@@ -148,7 +148,6 @@ export default {
 
 <style scoped lang="less">
 @import "../assets/mixin.less";
-// @import "../../node_modules/normalize.css/normalize.css";
 .iframe {
   height: 100vh;
   width: 100%;

@@ -71,7 +71,6 @@
 
 <script>
   import $ from 'n-zepto'
-  import ArticleItem from './Article-item.vue'
   import ArticleTop from './Article-top.vue'
   import Refresh from '../components/loading/refresh.vue'
   export default {
@@ -114,7 +113,6 @@
       }
     },
     components: {
-      ArticleItem,
       ArticleTop,
       Refresh
     },
@@ -146,7 +144,6 @@
       },
       scroll(v) {
         let currentY = v.y
-        // console.log('currentY', currentY, this.scrollY)
         this.timer = setTimeout(() => {
           if (currentY < -50) { // 还是解决ios下的怪异问题
             if (Math.abs(currentY) > Math.abs(this.scrollY)) {
@@ -222,7 +219,6 @@
     },
     mounted() {
       this.$nextTick(() => {})
-      // console.log(this.$store)
     }
   }
 </script>

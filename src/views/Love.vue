@@ -104,19 +104,12 @@
       },
       scroll(v) {
         let currentY = v.y
-        console.log('currentY', currentY, this.scrollY)
         this.timer = setTimeout(() => {
           if (currentY < -50) { // 还是解决ios下的怪异问题
             if (Math.abs(currentY) > Math.abs(this.scrollY)) {
               $('#app').addClass('toggle')
-              // $('.love-h').addClass('up')
-              // $('.tab').addClass('up')
-              // console.log('向下')
             } else {
-              // console.log('向上')
               $('#app').removeClass('toggle')
-              // $('.love-h').removeClass('up')
-              // $('.tab').removeClass('up')
             }
           }
           this.scrollY = currentY
