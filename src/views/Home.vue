@@ -5,27 +5,20 @@
       <router-view class="RouterView"></router-view>
       </keep-alive>
     </transition>
-    <!--<van-nav-bar title="标题" fixed leftText="返回" rightText="按钮" leftArrow @click-left="onClickLeft" @click-right="onClickRight" />-->
     <van-tabbar v-model="active" class="footer" ref="footer">
-      <van-tabbar-item icon="shop" to="index">
+      <van-tabbar-item  to="index">
         <span>首页</span>
         <div slot="icon" slot-scope="props">
           <i class="iconfont icon-toutiao"></i>
         </div>
       </van-tabbar-item>
-      <!-- <van-tabbar-item icon="chat"  to="love">
-        <span>专栏</span>
-        <div slot="icon" slot-scope="props">
-          <i class="iconfont icon-zhuanlan_jiemu"></i>
-        </div>
-      </van-tabbar-item> -->
-      <van-tabbar-item icon="records"  to="find">
+      <van-tabbar-item   to="find">
         <span>发现</span>
         <div slot="icon" slot-scope="props">
           <i class="iconfont icon-faxian"></i>
         </div>
       </van-tabbar-item>
-      <van-tabbar-item icon="gold-coin"  to="user">
+      <van-tabbar-item   to="user">
         <span>我的</span>
         <div slot="icon" slot-scope="props">
           <i class="iconfont icon-wode"></i>
@@ -59,14 +52,11 @@
             case '/index':
               this.active = 0
               break
-            case '/msg':
+            case '/find':
               this.active = 1
               break
-            case '/order':
-              this.active = 2
-              break
             case '/user':
-              this.active = 3
+              this.active = 2
               break
           }
         }
@@ -93,9 +83,31 @@
       },
       onClickRight() {
         this.$toast('按钮')
+      },
+      _selectPath() {
+        let urlmark = this.$route.path
+          switch (urlmark) {
+            case '/home':
+              this.active = 0
+              break
+            case '/':
+              this.active = 0
+              break
+            case '/index':
+              this.active = 0
+              break
+            case '/find':
+              this.active = 1
+              break
+            case '/user':
+              this.active = 2
+              break
+          }
       }
     },
-    mounted() {}
+    mounted() {
+      this._selectPath()
+    }
   }
 </script>
 
