@@ -140,7 +140,7 @@ export default {
   activated() {
     this.info = this.$route.params.info
     this.$nextTick(function() {
-      $('.__lock__').html('<span class="__has-clock__">加密文本内容</span>')
+      // $('.__lock__').html('<span class="__has-clock__">加密文本内容</span>')
     })
   }
 }

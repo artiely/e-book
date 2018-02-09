@@ -22,26 +22,128 @@
   <!--隐藏ios上的浏览器地址栏-->
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=yes,minimal-ui">
-  <title>pocket-book</title>
+  <title>群思知识库</title>
   <!-- <link rel="stylesheet" href="https://unpkg.com/cube-ui/lib/cube.min.css"> -->
   <!-- <link rel="stylesheet" href="/static/cube.css"> -->
   <link rel="stylesheet" href="//at.alicdn.com/t/font_507383_blm3rwe75grjm7vi.css">
   <!-- 引入样式 -->
-<link rel="stylesheet" href="https://unpkg.com/vant/lib/vant-css/index.css">
-  <!-- <script src="https://unpkg.com/cube-ui/lib/cube.min.js"></script> -->
+  <link rel="stylesheet" href="https://unpkg.com/vant/lib/vant-css/index.css">
+  <style>
+    body,
+    html {
+      max-width: 720px;
+      height: 100vh;
+      margin: 0 auto !important;
+      position: relative
+    }
+
+    .scene {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9;
+      height: 100vh;
+      width: 100%;
+      background: #c6cccf;
+      background: -webkit-linear-gradient(top left, #c6cccf 0%, #e0e4e6 100%);
+      background: -moz-linear-gradient(top left, #c6cccf 0%, #e0e4e6 100%);
+      background: -o-linear-gradient(top left, #c6cccf 0%, #e0e4e6 100%);
+      background: linear-gradient(to bottom right, #c6cccf 0%, #e0e4e6 100%);
+    }
+
+    .scene img {
+      width: 200px;
+      display: block;
+      margin: 200px auto;
+      margin-bottom: 50px;
+    }
+
+    .loading {
+      width: 150px;
+      height: 15px;
+      margin: 50px auto;
+      margin-top: 100px;
+    }
+
+    .loading span {
+      display: inline-block;
+      width: 15px;
+      height: 100%;
+      margin-right: 5px;
+      background: rgb(126, 129, 126);
+      -webkit-transform-origin: right bottom;
+      -webkit-animation: load 1s ease infinite;
+    }
+
+    .loading span:last-child {
+      margin-right: 0px;
+    }
+
+    @-webkit-keyframes load {
+      0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        -webkit-transform: rotate(90deg);
+      }
+    }
+
+    .loading span:nth-child(1) {
+      -webkit-animation-delay: 0.13s;
+    }
+
+    .loading span:nth-child(2) {
+      -webkit-animation-delay: 0.26s;
+    }
+
+    .loading span:nth-child(3) {
+      -webkit-animation-delay: 0.39s;
+    }
+
+    .loading span:nth-child(4) {
+      -webkit-animation-delay: 0.52s;
+    }
+
+    .loading span:nth-child(5) {
+      -webkit-animation-delay: 0.65s;
+    }
+
+    .bottomTip {
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      color: #fff;
+    }
+
+  </style>
   <script src="//at.alicdn.com/t/font_515120_x5b68a3mxxswcdi.js"></script>
   <!-- 引入组件 -->
-
+</head>
+<body>
+  <div class="scene" id="scene">
+    <div class="loading">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <p class="bottomTip">欢迎访问群思知识库</p>
+  </div>
+  <div id="app"></div>
   <script src="./statics/mobile/libs/vue.min.2.5.13.js"></script>
   <script src="./statics/mobile/libs/vue-router.min.3.0.1.js"></script>
   <script src="./statics/mobile/libs/axios.min.0.17.1.js"></script>
   <script src="./statics/mobile/libs/vuex.min.3.0.1.js"></script>
   <script src="./statics/mobile/libs/vant.min.0.12.6.js"></script>
-</head>
-
-<body>
-  <div id="app"></div>
   <!-- built files will be auto injected -->
 </body>
-
+<script>
+  window.onload = function () {
+    document.getElementById('scene').style.display = 'none'
+  }
+</script>
 </html>
