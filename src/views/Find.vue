@@ -6,7 +6,7 @@
       </div>
       <div slot="title">
       </div>
-      <div slot="right">
+      <!-- <div slot="right">
         <span @click="filter">
           <i class="iconfont  icon-weibiaoti35"></i>
         <span>{{company.text}}</span>
@@ -18,26 +18,47 @@
         <span class="right-item" @click="showSearch">
         <i class="iconfont icon-sousuo"></i>
       </span>
-      </div>
+      </div> -->
     </van-nav-bar>
     <div class="wrapper">
       <cube-scroll :data="articleList">
-        <p v-if="articleList.length==0" style="text-align:center;color:#888;padding:9px;font-size:14px;">选择公司、类目或关键词搜索文章</p>
+        <van-cell-group>
+          <van-cell title="公司" is-link :value="companyNameString" @click.native="companyShow"/>
+          <van-cell v-show="company.id" title="类目" is-link :value="choice_category.text" @click.native="filter2"/>
+          <van-cell title="关键词" is-link :value="keywordsResult.length>0 ? keywordsResult.length + '个关键词':'点击选择'"  @click.native="showSearch"/>
+        </van-cell-group>
+        <p v-if="(params.companyId==''&&params.categoryId1==''&&params.keywordIds.length==0)&&articleList.length==0" style="text-align:center;color:#888;padding:9px;font-size:14px;">选择公司、类目或关键词搜索文章</p>
+        <p v-else-if="articleList.length==0" style="text-align:center;color:#888;padding:9px;font-size:14px;">暂无匹配数据...</p>
+       
         <article-top :data="articleList" @to-detail="toDetail"></article-top>
       </cube-scroll>
     </div>
     <van-popup v-model="show" style="height:80%;width:100%" position="bottom">
-      <van-picker :visibile-column-count="8" :columns="comapnyList" @change="onChange" show-toolbar title="选择公司" @cancel="onCancel" @confirm="onConfirm" />
+      <van-picker :visible-item-count="8" :columns="companyList" @change="onChange" show-toolbar title="选择公司" @cancel="onCancel" @confirm="onConfirm" />
     </van-popup>
     <van-popup v-model="show2" style="height:80%;width:100%" position="bottom">
-      <van-picker :visibile-column-count="8" :columns="category_1" @change="onChange2" show-toolbar title="选择类目" @cancel="onCancel2" @confirm="onConfirm2" />
+      <van-picker :visible-item-count="8" :columns="category_1" @change="onChange2" show-toolbar title="选择类目" @cancel="onCancel2" @confirm="onConfirm2" />
+    </van-popup>
+     <van-popup v-model="companyVisiable" style="height:100%;width:80%" position="right">
+      <van-search style="position:absolute;top:0px;left:0;right:0" v-model="companyShotName" placeholder="请输入公司简称" >
+      </van-search>
+      <div class="wrapper-search">
+          <!-- <p style="font-size:12px;padding-left:8px;color:#777">选择关键词进行搜索</p> -->
+          <van-radio-group v-model="company.id"> 
+            <van-cell-group>
+              <van-cell v-for="(v, index) in companyList" :key="index">
+                <van-radio shape="square" :name="v.id">{{ v.text }}</van-radio>
+              </van-cell>
+            </van-cell-group>
+          </van-radio-group>
+      </div>
     </van-popup>
     <van-popup v-model="show3" style="height:100%;width:80%" position="right">
       <van-search style="position:absolute;top:0px;left:0;right:0" v-model="value" placeholder="请输入关键词" >
          <!-- <div slot="action" @click="onClose">关闭</div> -->
       </van-search>
-      <div class="wrapper">
-        <cube-scroll>
+      <div class="wrapper-search">
+        <!-- <cube-scroll :data="keywordList"> -->
           <p style="font-size:12px;padding-left:8px;color:#777">选择关键词进行搜索</p>
           <van-checkbox-group v-model="keywordsResult">
             <van-cell-group>
@@ -46,7 +67,7 @@
               </van-cell>
             </van-cell-group>
           </van-checkbox-group>
-        </cube-scroll>
+        <!-- </cube-scroll> -->
       </div>
     </van-popup>
   </div>
@@ -58,6 +79,10 @@ export default {
   data() {
     return {
       value: '',
+      companyVisiable: false,
+      categoryVisiable: false,
+      keywordVisiable: false,
+      timer: null,
       show: false,
       show2: false,
       show3: false,
@@ -67,27 +92,25 @@ export default {
         id: '',
         categoryId: ''
       },
+      companyTimer: null,
+      companyShotName: '',
+      companyNameString: '点击选择',
       articleList: [],
       category_1: [],
       category_2: [],
       choice_category: {
-        text: '选择类目',
+        text: '点击选择',
         id: '',
         categoryId: ''
       },
       keywordList: [],
-      comapnyList: []
+      companyList: []
     }
   },
   components: {
     ArticleTop
   },
   watch: {
-    'company.id': {
-      handler(val) {
-        this.getCategory_1()
-      }
-    },
     'params': {
       handler() {
         this.search()
@@ -95,18 +118,42 @@ export default {
     },
     'value': {
       handler() {
-        this._getKeyword()
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          this._getKeyword()
+        }, 600)
+      }
+    },
+    'company.id': {
+      handler(val) {
+        let companyname = this.companyList.filter(v => {
+          if (val === v.id) {
+            return v
+          }
+        })
+        this.companyNameString = companyname[0].shortName
+        this.getCategory_1()
+      }
+    },
+    'companyShotName': {
+      handler(val) {
+        clearTimeout(this.companyTimer)
+        setTimeout(() => {
+          this.getCompany({ page: 1, limit: 100, shortName: val })
+        }, 600)
       }
     }
   },
   computed: {
     params() {
+      // let _id = JSON.parse(this.company._string)
       return {
         page: 1,
         limit: 20,
         companyId: this.company.id,
-        categoryId1: this.company.categoryId,
-        categoryId2: this.choice_category.categoryId,
+        categoryId1: this.choice_category.categoryId,
+        // categoryId1: this.company.categoryId,
+        // categoryId2: this.choice_category.categoryId,
         keywordIds: this.keywordsResult
       }
     },
@@ -124,21 +171,33 @@ export default {
     this.getCompany()
   },
   methods: {
+    companyShow() {
+      this.companyVisiable = true
+    },
+    categoryShow() {
+      this.categoryVisiable = true
+    },
+    keywordShow() {
+      this.keywordVisiable = true
+    },
     onClose() {
       this.show3 = false
     },
-    getCompany() {
-      this.$api.GET_COMPANY_LIST({ page: 1, limit: 100 }).then(res => {
+    getCompany(data) {
+      let _data = data || { page: 1, limit: 100 }
+      this.$api.GET_COMPANY_LIST(_data).then(res => {
         if (res.code === 0) {
           let data = res.page.list.map(v => {
-            v.text = v.companyname
+            v.text = v.companyname || '奇怪,没公司名'
+            v.id = v.id || ''
             return v
           })
           data.unshift({
             text: '全部公司',
+            shortName: '全部公司',
             id: ''
           })
-          this.comapnyList = data
+          this.companyList = data
         }
       })
     },
@@ -160,7 +219,11 @@ export default {
         name: this.value
       }).then(res => {
         if (res.code === 0) {
-          this.keywordList = res.page.list
+          this.keywordList = res.page.list.map(v => {
+            v._string = JSON.stringify({ _id: v.id, _name: v.name })
+            return v
+          })
+          console.log('----------', this.keywordList)
         }
       })
     },
@@ -222,14 +285,14 @@ export default {
       this.show = false
     },
     onCancel() {
-      this.company = this.category_1[0]
+      // this.company = this.category_1[0]
       this.show = false
     },
     onConfirm2() {
       this.show2 = false
     },
     onCancel2() {
-      this.choice_category = this.category_2[0]
+      // this.choice_category = this.category_2[0]
       this.show2 = false
     },
     onChange(picker, values) {
@@ -259,9 +322,18 @@ export default {
 <style scoped lang="less">
 .wrapper {
   height: 100vh;
-  padding-top: 44px;
+  padding-top: 45px;
   padding-bottom: 50px;
   box-sizing: border-box;
+}
+.wrapper-search {
+  height: 100vh;
+  padding-top: 44px;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+.van-search {
+  z-index: 9;
 }
 .right-item {
   padding: 0 8px;

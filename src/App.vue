@@ -55,6 +55,7 @@ export default {
 }
 .pdd {
   padding: 14px 0;
+  min-width: 90px;
 }
 ._swiper {
   padding: 14px 0;
