@@ -112,6 +112,19 @@ const GET_COMPANY_LIST = params => {
   })
 }
 
+/**
+ * 获取公司列表
+ * @param {String} page
+ * @param {String} limit
+ */
+const GET_COMPANY_LIST_BYUSER = params => {
+  return fetch({
+    url: '/company/queryOnlyOwnerCompanys',
+    method: 'get',
+    params: params
+  })
+}
+
 const apiList = {
   LOGIN,
   REGISTER,
@@ -120,7 +133,8 @@ const apiList = {
   GET_CATEGORY_LIST,
   GET_CATEGORY_TREE,
   GET_KEYWORD_LIST,
-  GET_COMPANY_LIST
+  GET_COMPANY_LIST,
+  GET_COMPANY_LIST_BYUSER
 }
 
 export default apiList

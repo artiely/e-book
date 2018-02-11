@@ -45,6 +45,7 @@
       logout() {
         Cookies.remove('__userInfo')
         this.$router.replace('/login')
+        window.location.reload()
       }
     },
     mounted() {

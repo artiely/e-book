@@ -140,7 +140,12 @@ export default {
   activated() {
     this.info = this.$route.params.info
     this.$nextTick(function() {
-      // $('.__lock__').html('<span class="__has-clock__">加密文本内容</span>')
+      if ($('.__lock__').eq(0).text() !== '加密文本内容') {
+        var locks = $('.__lock__')
+        for (var j = 0; j < locks.length; j++) {
+          locks[j].replaceWith(locks[j].innerText)
+        }
+      }
     })
   }
 }

@@ -40,7 +40,7 @@
       <van-picker :visible-item-count="8" :columns="category_1" @change="onChange2" show-toolbar title="选择类目" @cancel="onCancel2" @confirm="onConfirm2" />
     </van-popup>
      <van-popup v-model="companyVisiable" style="height:100%;width:80%" position="right">
-      <van-search style="position:absolute;top:0px;left:0;right:0" v-model="companyShotName" placeholder="请输入公司简称" >
+      <van-search style="position:absolute;top:0px;left:0;right:0" v-model="companyShortName" placeholder="请输入公司简称" >
       </van-search>
       <div class="wrapper-search">
           <!-- <p style="font-size:12px;padding-left:8px;color:#777">选择关键词进行搜索</p> -->
@@ -93,7 +93,7 @@ export default {
         categoryId: ''
       },
       companyTimer: null,
-      companyShotName: '',
+      companyShortName: '',
       companyNameString: '点击选择',
       articleList: [],
       category_1: [],
@@ -135,11 +135,11 @@ export default {
         this.getCategory_1()
       }
     },
-    'companyShotName': {
+    'companyShortName': {
       handler(val) {
         clearTimeout(this.companyTimer)
         setTimeout(() => {
-          this.getCompany({ page: 1, limit: 100, shortName: val })
+          this.getCompany({ page: 1, limit: 100, sSearch: val })
         }, 600)
       }
     }
@@ -185,7 +185,7 @@ export default {
     },
     getCompany(data) {
       let _data = data || { page: 1, limit: 100 }
-      this.$api.GET_COMPANY_LIST(_data).then(res => {
+      this.$api.GET_COMPANY_LIST_BYUSER(_data).then(res => {
         if (res.code === 0) {
           let data = res.page.list.map(v => {
             v.text = v.companyname || '奇怪,没公司名'
