@@ -224,4 +224,8 @@ export default {
 .f18 {
   font-size: 18px !important;
 }
+<<<<<<< HEAD
 </style>
+=======
+</style>
+>>>>>>> 36cf15f90216d83bb9ff1fdf9497bf90fc1aebe6
