@@ -86,7 +86,7 @@
         return this.$store.state.user.titleList
       },
       category_3() {
-        return this.$store.state.user.category_3
+        return this.$store.state.user.category_2
       },
       listParams() {
         return this.$store.state.user.listParams
@@ -95,8 +95,8 @@
         return {
           page: 1,
           limit: 10,
-          categoryId2: this.listParams.id,
-          categoryId3: this.choice.id
+          categoryId1: this.listParams.id,
+          categoryId2: this.choice.id
         }
       }
     },

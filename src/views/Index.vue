@@ -121,7 +121,7 @@
         return this.$store.state.user.department
       },
       category_2() {
-        return this.$store.state.user.category_2
+        return this.$store.state.user.category_1
       }
     },
     methods: {
