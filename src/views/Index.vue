@@ -39,16 +39,13 @@
                   </div> -->
           <!-- <div slot="pulldown">下拉刷新</div> -->
           <div class="content" slot="default">
-            <van-row class="grid-tit">
+            <!-- <van-row class="grid-tit">
               <swiper :options="swiperOption" class="swiper _swiper">
                 <swiper-slide v-for="(v,k) in category_2" :key="k" @click.native="goList(v)">
-                  <!-- <svg class="icon" aria-hidden="true">
-                      <use :xlink:href="'#'+v.icon"></use>
-                  </svg> -->
                   <p class="textover1 pdd">{{v.name}}</p>
                 </swiper-slide>
               </swiper>
-            </van-row>
+            </van-row> -->
             <p class="no-data" v-show="articleList.length==0">暂无数据...</p>
             <article-top :data="articleList" @to-detail="toDetail"></article-top>
           </div>
@@ -236,7 +233,7 @@
     box-sizing: border-box;
   }
   .header {
-    z-index: 1;
+    z-index: 9;
     transform: translateZ(0px);
     .logo {
       filter: brightness(0.7);

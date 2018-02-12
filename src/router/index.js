@@ -61,7 +61,7 @@ const router = new Router({
       path: '/home',
       name: 'Home',
       component: Home,
-      redirect: '/index',
+      redirect: '/find',
       meta: {requiresAuth: true},
       children: [{
         path: '/index',

@@ -1,27 +1,14 @@
 <template>
   <div class="index page">
-    <van-nav-bar ref="header" class="header shadow" fixed @click-left="onClickLeft">
-      <div slot="left" class="header-left">
-        <i class="iconfont icon-fanhui"></i>
+    <!-- <van-nav-bar ref="header" class="header shadow" fixed >
+      <div slot="right" class="header-left" @click="actionshow=true">
+        <i class="iconfont icon-tuichu"></i>
       </div>
       <div slot="title">
       </div>
-      <!-- <div slot="right">
-        <span @click="filter">
-          <i class="iconfont  icon-weibiaoti35"></i>
-        <span>{{company.text}}</span>
-        </span>
-        <span @click="filter2" v-show="company.id">
-      <i class="iconfont  icon-weibiaoti35"></i>
-    <span>{{choice_category.text}}</span>
-        </span>
-        <span class="right-item" @click="showSearch">
-        <i class="iconfont icon-sousuo"></i>
-      </span>
-      </div> -->
-    </van-nav-bar>
-    <div class="wrapper">
-      <cube-scroll :data="articleList">
+    </van-nav-bar> -->
+    <div class="wrapper" style="padding-top:0">
+      <cube-scroll :data="articleList"  @pulling-down="onPullingDown" @pulling-up="onPullUp" :listenScroll="true" @scroll="scroll" :options="options"  ref="scroll">
         <van-cell-group>
           <van-cell title="公司" is-link :value="companyNameString" @click.native="companyShow"/>
           <van-cell v-show="company.id" title="类目" is-link :value="choice_category.text" @click.native="filter2"/>
@@ -37,7 +24,7 @@
       <van-picker :visible-item-count="8" :columns="companyList" @change="onChange" show-toolbar title="选择公司" @cancel="onCancel" @confirm="onConfirm" />
     </van-popup>
     <van-popup v-model="show2" style="height:80%;width:100%" position="bottom">
-      <van-picker :visible-item-count="8" :columns="category_1" @change="onChange2" show-toolbar title="选择类目" @cancel="onCancel2" @confirm="onConfirm2" />
+      <van-picker :visible-item-count="8" :columns="category_1" @change="onChange2" show-toolbar  @cancel="onCancel2" @confirm="onConfirm2" />
     </van-popup>
      <van-popup v-model="companyVisiable" style="height:100%;width:80%" position="right">
       <van-search style="position:absolute;top:0px;left:0;right:0" v-model="companyShortName" placeholder="请输入公司简称" >
@@ -70,14 +57,23 @@
         <!-- </cube-scroll> -->
       </div>
     </van-popup>
+    <van-actionsheet v-model="actionshow" :actions="actions" cancel-text="取消" />
   </div>
 </template>
 <script>
+import Cookies from 'js-cookie'
 import ArticleTop from './Article-top.vue'
 export default {
   name: 'app',
   data() {
     return {
+      actionshow: false,
+      actions: [
+        {
+          name: '注销',
+          callback: this.logout
+        }
+      ],
       value: '',
       companyVisiable: false,
       categoryVisiable: false,
@@ -104,7 +100,22 @@ export default {
         categoryId: ''
       },
       keywordList: [],
-      companyList: []
+      companyList: [],
+      options: {
+        probeType: 1,
+        pullDownRefresh: {
+          stop: 44,
+          threshold: 70,
+          txt: '刷新成功'
+        },
+        pullUpLoad: {
+          threshold: -50,
+          txt: {
+            more: '上拉加载更多...',
+            noMore: '———— 我就是底线 ————'
+          }
+        }
+      }
     }
   },
   components: {
@@ -149,7 +160,7 @@ export default {
       // let _id = JSON.parse(this.company._string)
       return {
         page: 1,
-        limit: 20,
+        limit: 10,
         companyId: this.company.id,
         categoryId1: this.choice_category.categoryId,
         // categoryId1: this.company.categoryId,
@@ -169,8 +180,17 @@ export default {
     this._init_c_2()
     this._getKeyword()
     this.getCompany()
+    this.getData({
+      page: 1,
+      limit: 10
+    })
   },
   methods: {
+    logout() {
+      Cookies.remove('__userInfo')
+      this.$router.replace('/login')
+      window.location.reload()
+    },
     companyShow() {
       this.companyVisiable = true
     },
@@ -311,6 +331,38 @@ export default {
     onSearch() { },
     goCompany() {
       this.$router.push('/company')
+    },
+    getData(params) {
+      this.$api.GET_ARTICLE_LIST(params).then(res => {
+        if (res.code === 0) {
+          if (params.page === 1) {
+            this.articleList = res.page.list
+          } else {
+            if (res.page.list.length === 0) {
+              // 如果没有新数据
+              this.stop = true
+              this.$refs.scroll.forceUpdate()
+            } else {
+              this.stop = false
+              this.articleList = this.articleList.concat(res.page.list)
+            }
+          }
+        } else { }
+      })
+    },
+    onPullingDown() {
+      // console.log('下拉刷新了')
+      this.getData({
+        page: 1,
+        limit: 10
+      })
+    },
+    onPullUp() {
+      // console.log('上拉加载了')
+      if (!this.stop) {
+        this.params.page++
+      }
+      this.getData(this.params)
     }
   },
   mounted() {
