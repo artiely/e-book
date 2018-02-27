@@ -4,8 +4,8 @@
       <img :src="require('../assets/logo_eng_white.png')" alt="">
     </div>
     <van-cell-group class="login-box">
-      <van-field v-model.trim="username" icon="clear" placeholder="请输入用户名"></van-field>
-      <van-field v-model.trim="password" icon="clear" placeholder="请输入密码" type="password"></van-field>
+      <van-field v-model.trim="username" icon="clear" placeholder="请输入用户名" @click-icon="username = ''"></van-field>
+      <van-field v-model.trim="password" icon="clear" placeholder="请输入密码" type="password" @click-icon="password = ''"></van-field>
     </van-cell-group>
     <p class="error-tip" v-show="error"><i class="iconfont icon-jinggao"></i>{{errorMsg}}</p>
     <t-button @click.native="login">登录</t-button>

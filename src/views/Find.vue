@@ -34,7 +34,7 @@
           <van-radio-group v-model="company.id"> 
             <van-cell-group>
               <van-cell v-for="(v, index) in companyList" :key="index">
-                <van-radio shape="square" :name="v.id">{{ v.text }}</van-radio>
+                <van-radio  :name="v.id">{{ v.text }}</van-radio>
               </van-cell>
             </van-cell-group>
           </van-radio-group>

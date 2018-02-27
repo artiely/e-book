@@ -22,8 +22,9 @@
             <div v-show="!isIframe" style="padding:18px;">
               <h3 class="detail-title">{{info.title}}</h3>
               <div class="info clearfix">
-                <div class="author">{{info.createByUserName}}</div>
-                <div class="time">{{info.createDate}}</div>
+                <div class="author">创建者：{{info.createByUserName}}</div>
+                <div class="time">发表时间：{{info.createDate}}</div>
+                <div>关键词：<span v-for="it in info.keywordList" :key='it.id' style="font-size:12px;margin-right:4px;">{{it.text}}</span></div>
               </div>
               <div v-html="info.content"></div>
             </div>
